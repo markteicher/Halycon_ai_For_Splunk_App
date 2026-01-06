@@ -3,7 +3,7 @@
 ## Overview
 Full Splunk App for Halcyon.ai ransomware protection and resilience. Monitor, investigate, and operationalize Halcyon alerts, artifacts, detections, response actions, and platform health using the Halcyon API.
 
-
+This app provides security teams and executives with real-time visibility into ransomware activity, behavioral detections, and automated response outcomes collected from Halcyon.ai.
 
 ## Features
 
@@ -58,10 +58,10 @@ Full Splunk App for Halcyon.ai ransomware protection and resilience. Monitor, in
 2. Configure the following settings
 
 #### API Configuration
-- **Halcyon API Token**: API token from Halcyon console
-- **API Base URL**: `https://api.halcyon.ai`
-- **Verify SSL**: Enable certificate verification
-- **Request Timeout**: Default 60 seconds
+- **Halcyon API Token**
+- **API Base URL**: https://api.halcyon.ai
+- **Verify SSL**
+- **Request Timeout**
 
 #### Proxy Configuration (Optional)
 - **Use Proxy**
@@ -70,7 +70,6 @@ Full Splunk App for Halcyon.ai ransomware protection and resilience. Monitor, in
 - **Proxy Password**
 
 #### Data Inputs
-Select which data to collect:
 - Alerts
 - Alert Artifacts
 - Detection Metadata
@@ -78,15 +77,104 @@ Select which data to collect:
 - Hosts / Endpoints
 - Platform Health
 
-3. Click **Save**
-
 ### Step 3: Validate Configuration
-- Click **Test API Connection**
-- Confirm successful authentication
-- Validation runs automatically on first launch
+- Test API connection
+- Automatic validation on first launch
 
 ### Step 4: Verify Data Collection
-Run the following search:
 ```spl
 index=security_halcyon sourcetype=halcyon:*
 | stats count by sourcetype
+```
+
+## Directory Structure
+```
+Halcyon_For_Splunk_App/
+├── app.manifest
+├── LICENSE
+├── README.md
+├── default/
+│   ├── app.conf
+│   ├── inputs.conf
+│   ├── indexes.conf
+│   ├── props.conf
+│   ├── transforms.conf
+│   ├── macros.conf
+│   ├── restmap.conf
+│   ├── savedsearches.conf
+│   ├── web.conf
+│   └── data/ui/
+│       ├── nav/default.xml
+│       └── views/
+│           ├── setup.xml
+│           ├── halcyon_overview.xml
+│           ├── halcyon_alerts.xml
+│           ├── halcyon_artifacts.xml
+│           ├── halcyon_detections.xml
+│           ├── halcyon_response.xml
+│           ├── halcyon_hosts.xml
+│           ├── halcyon_trending.xml
+│           ├── halcyon_operations.xml
+│           └── halcyon_health.xml
+├── bin/
+│   ├── halcyon_input.py
+│   ├── halcyon_setup_handler.py
+│   └── halcyon_validation.py
+├── lookups/
+│   ├── halcyon_severity_levels.csv
+│   ├── halcyon_alert_types.csv
+│   └── halcyon_artifact_types.csv
+├── metadata/
+│   ├── default.meta
+│   └── local.meta
+└── static/
+    ├── appIcon.png
+    ├── appIcon_2x.png
+```
+
+## Dashboards
+| Dashboard | Description |
+|----------|-------------|
+| Overview | Executive ransomware posture |
+| Alerts | Alert investigation |
+| Artifacts | Artifact analysis |
+| Detections | Detection logic |
+| Response | Automated response |
+| Hosts | Endpoint visibility |
+| Trending | Trends |
+| Operations | Metrics |
+| Health | API health |
+
+## Sourcetypes
+| Sourcetype | Description |
+|-----------|-------------|
+| halcyon:alerts | Alerts |
+| halcyon:artifacts | Artifacts |
+| halcyon:detections | Detections |
+| halcyon:responses | Responses |
+| halcyon:hosts | Hosts |
+| halcyon:health | Health |
+
+## Requirements
+- Splunk Enterprise / Cloud
+- Python 3.x
+- Halcyon API Token
+
+## AppInspect Compliance
+- Proper structure
+- Secure credentials
+- Inputs disabled by default
+- app.manifest included
+- Apache 2.0 License
+
+## Troubleshooting
+- Verify token
+- Test API connectivity
+- Review Splunk logs
+
+## Support
+- https://api.halcyon.ai/docs
+- https://docs.splunk.com
+
+## License
+Apache License 2.0
