@@ -131,50 +131,49 @@ Halcyon_For_Splunk_App/
     ├── appIcon.png
     ├── appIcon_2x.png
 ```
-
-## Dashboards
+## 📊 Dashboards
 | Dashboard | Description |
 |----------|-------------|
-| Overview | Executive ransomware posture |
-| Alerts | Alert investigation |
-| Artifacts | Artifact analysis |
-| Detections | Detection logic |
-| Response | Automated response |
-| Hosts | Endpoint visibility |
-| Trending | Trends |
-| Operations | Metrics |
-| Health | API health |
+| 🧭 Overview | Executive ransomware posture |
+| 🚨 Alerts | Alert investigation |
+| 🧬 Artifacts | Artifact analysis |
+| 🕵️ Detections | Detection logic |
+| ⚡ Response | Automated response |
+| 🖥️ Hosts | Endpoint visibility |
+| 📈 Trending | Trends |
+| ⚙️ Operations | Metrics |
+| ❤️ Health | API health |
 
-## Sourcetypes
+## 🧾 Sourcetypes
 | Sourcetype | Description |
 |-----------|-------------|
-| halcyon:alerts | Alerts |
-| halcyon:artifacts | Artifacts |
-| halcyon:detections | Detections |
-| halcyon:responses | Responses |
-| halcyon:hosts | Hosts |
-| halcyon:health | Health |
+| `halcyon:alerts` | Alerts |
+| `halcyon:artifacts` | Artifacts |
+| `halcyon:detections` | Detections |
+| `halcyon:responses` | Responses |
+| `halcyon:hosts` | Hosts |
+| `halcyon:health` | Health |
 
-## Requirements
-- Splunk Enterprise / Cloud
-- Python 3.x
+## 📦 Requirements
+- Splunk Enterprise / Splunk Cloud
+- Python 3.x (Splunk bundled)
 - Halcyon API Token
 
-## AppInspect Compliance
-- Proper structure
-- Secure credentials
+## ✅ AppInspect Compliance
+- Proper directory structure
+- Secure credential handling
 - Inputs disabled by default
-- app.manifest included
+- `app.manifest` included
 - Apache 2.0 License
 
-## Troubleshooting
-- Verify token
+## 🛠️ Troubleshooting
+- Verify API token
 - Test API connectivity
-- Review Splunk logs
+- Review Splunk internal logs
 
-## Support
-- https://api.halcyon.ai/docs
-- https://docs.splunk.com
+## 📚 Support
+- Halcyon API Docs: https://api.halcyon.ai/docs
+- Splunk Docs: https://docs.splunk.com
 
-## License
+## 📜 License
 Apache License 2.0
