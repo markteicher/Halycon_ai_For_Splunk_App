@@ -1,66 +1,89 @@
+<!--
+default/data/ui/views/halycon_assets.xml
+Halcyon.ai for Splunk App — Assets
+-->
+
 <form version="1.1" theme="light">
   <label>🖥️ Assets</label>
+  <description>Asset inventory, deployment context, and lifecycle visibility.</description>
 
+  <search>
+    <query>
+      index=security_halycon sourcetype=halcyon:asset
+    </query>
+    <earliest>-24h</earliest>
+    <latest>now</latest>
+  </search>
+
+  <!-- =============================== -->
+  <!-- Asset Inventory Table           -->
+  <!-- =============================== -->
   <row>
     <panel>
+      <title>🖥️ Asset Inventory</title>
       <table>
         <search>
           <query>
-            index=security_halcyon sourcetype=halcyon:asset
-            | spath
-            | eval status=case(
-                isnotnull(deletedAt), "❌ Deleted",
-                isnull(lastHeartbeatDate), "⚪ No Heartbeat",
-                now() - strptime(lastHeartbeatDate, "%Y-%m-%dT%H:%M:%SZ") &lt;= 86400, "🟢 Active (≤24h)",
-                now() - strptime(lastHeartbeatDate, "%Y-%m-%dT%H:%M:%SZ") &lt;= 604800, "🟡 Stale (≤7d)",
-                1=1, "🔴 Inactive (&gt;7d)"
-              )
-            | eval policy_owner=coalesce('policyGroup.owner',"")
-            | eval policy_owner_icon=case(
-                policy_owner="System","⚙️ System",
-                policy_owner!="","👤 " . policy_owner,
-                1=1,""
-              )
-            | rename
-                id AS "🆔 Asset ID"
-                tenantId AS "🏢 Tenant ID"
-                name AS "🖥️ Asset Name"
-                createdDate AS "🗓️ Created"
-                lastUpdatedDate AS "✏️ Updated"
-                lastHeartbeatDate AS "💓 Last Heartbeat"
-                deletedAt AS "🗑️ Deleted At"
-                status AS "🧭 Status"
-                policyGroup.id AS "📜 Policy Group ID"
-                policyGroup.name AS "📜 Policy Group"
-                policy_owner_icon AS "👤 Policy Owner"
-                deploymentGroup.id AS "🧱 Deployment Group ID"
-                deploymentGroup.name AS "🧱 Deployment Group"
-                macAddresses{} AS "🧬 MAC Addresses"
-                ipAddresses{}.value AS "🌐 IP Addresses"
-                ipAddresses{}.ipAddressType AS "📡 IP Type"
+            index=security_halycon sourcetype=halcyon:asset
             | fields
-                "🧭 Status"
-                "🖥️ Asset Name"
-                "🆔 Asset ID"
-                "🏢 Tenant ID"
-                "🗓️ Created"
-                "✏️ Updated"
-                "💓 Last Heartbeat"
-                "🗑️ Deleted At"
-                "📜 Policy Group"
-                "👤 Policy Owner"
-                "🧱 Deployment Group"
-                "🧬 MAC Addresses"
-                "🌐 IP Addresses"
-                "📡 IP Type"
+                asset_id
+                asset_name
+                tenant_id
+                policy_group_name
+                policy_group_owner
+                deployment_group_name
+                macAddresses
+                ipAddresses.value
+                lastHeartbeatDate
+                createdDate
+                lastUpdatedDate
+                deletedAt
+            | eval status_icon=if(isnotnull(deletedAt),"🟥 Deleted","🟢 Active")
           </query>
         </search>
 
-        <option name="count">50</option>
-        <option name="rowNumbers">true</option>
+        <option name="count">25</option>
         <option name="wrap">true</option>
         <option name="drilldown">row</option>
+
+        <drilldown>
+          <set token="asset_id">$row.asset_id$</set>
+        </drilldown>
+
+        <fields>
+          <field name="status_icon">Status</field>
+          <field name="asset_name">🖥️ Asset Name</field>
+          <field name="asset_id">🆔 Asset ID</field>
+          <field name="policy_group_name">📜 Policy Group</field>
+          <field name="policy_group_owner">👤 Policy Owner</field>
+          <field name="deployment_group_name">🧱 Deployment Group</field>
+          <field name="macAddresses">🔗 MAC Addresses</field>
+          <field name="ipAddresses.value">🌐 IP Addresses</field>
+          <field name="lastHeartbeatDate">💓 Last Heartbeat</field>
+          <field name="lastUpdatedDate">🕒 Last Updated</field>
+          <field name="createdDate">📅 Created</field>
+        </fields>
       </table>
+    </panel>
+  </row>
+
+  <!-- =============================== -->
+  <!-- Asset Status Summary             -->
+  <!-- =============================== -->
+  <row>
+    <panel>
+      <title>📊 Asset Status Overview</title>
+      <chart>
+        <search>
+          <query>
+            index=security_halycon sourcetype=halcyon:asset
+            | eval status=if(isnotnull(deletedAt),"🟥 Deleted","🟢 Active")
+            | stats count by status
+          </query>
+        </search>
+        <option name="charting.chart">pie</option>
+        <option name="charting.legend.placement">right</option>
+      </chart>
     </panel>
   </row>
 
