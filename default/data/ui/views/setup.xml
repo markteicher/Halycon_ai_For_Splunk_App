@@ -139,7 +139,7 @@ Notes:
           <choice value="health">💓 Health (halcyon:health)</choice>
           <choice value="auth_events">🔐 Auth Events (halcyon:auth_event)</choice>
 
-          <!-- Defaults  -->
+          <!-- Defaults (reasonable starting point) -->
           <default>alerts</default>
           <default>events</default>
           <default>threats</default>
@@ -174,3 +174,21 @@ Notes:
           <choice value="true">true</choice>
           <default>false</default>
         </input>
+      </panel>
+    </row>
+
+  </fieldset>
+
+  <!-- Submit handling is performed by setup.js (recommended).
+       add an informational footer here. -->
+  <row>
+    <panel>
+      <html>
+        <div class="help-block">
+          <b>Save behavior:</b> Clicking <i>Submit</i> should trigger your custom setup handler to store settings
+          (e.g., in <code>halcyon.conf</code> and <code>storage/passwords</code>) and to enable the selected inputs.
+        </div>
+      </html>
+    </panel>
+  </row>
+</form>
