@@ -1,1 +1,64 @@
-test
+<!--
+default/data/ui/nav/default.xml
+Halcyon.ai for Splunk App — Navigation
+-->
+
+<nav search_view="search" color="#0b3c5d">
+
+  <collection label="Halcyon.ai">
+    <view name="halcyon_overview"/>
+  </collection>
+
+  <collection label="Security">
+    <view name="halcyon_alerts"/>
+    <view name="halcyon_alert_instances"/>
+    <view name="halcyon_events"/>
+    <view name="halcyon_threats"/>
+    <view name="halcyon_artifacts"/>
+  </collection>
+
+  <collection label="Assets & Devices">
+    <view name="halcyon_assets"/>
+    <view name="halcyon_devices"/>
+    <view name="halcyon_device_keys"/>
+  </collection>
+
+  <collection label="Identity & Access">
+    <view name="halcyon_users"/>
+    <view name="halcyon_tenant_users"/>
+    <view name="halcyon_identity_providers"/>
+  </collection>
+
+  <collection label="Tenancy">
+    <view name="halcyon_tenants"/>
+    <view name="halcyon_subtenants"/>
+    <view name="halcyon_deployment_groups"/>
+  </collection>
+
+  <collection label="Policy & Control">
+    <view name="halcyon_policies"/>
+    <view name="halcyon_policy_groups"/>
+    <view name="halcyon_overrides"/>
+    <view name="halcyon_tags"/>
+  </collection>
+
+  <collection label="Operations">
+    <view name="halcyon_jobs"/>
+    <view name="halcyon_integrations"/>
+    <view name="halcyon_webhooks"/>
+    <view name="halcyon_installers"/>
+    <view name="halcyon_operations"/>
+  </collection>
+
+  <collection label="Platform">
+    <view name="halcyon_health"/>
+    <view name="halcyon_auth_events"/>
+    <view name="halcyon_logs"/>
+  </collection>
+
+  <collection label="Admin">
+    <view name="setup"/>
+    <view name="halcyon_help"/>
+  </collection>
+
+</nav>
