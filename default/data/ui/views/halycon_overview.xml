@@ -1,0 +1,140 @@
+<!--
+default/data/ui/views/halcyon_overview.xml
+Halcyon.ai for Splunk App — Executive Overview
+-->
+
+<form version="1.1" theme="light">
+  <label>🛡️ Halcyon.ai — Executive Overview</label>
+  <description>Ransomware posture, active threats, and platform health at a glance.</description>
+
+  <!-- ===================== -->
+  <!-- KPI Row               -->
+  <!-- ===================== -->
+  <row>
+    <panel>
+      <title>🚨 Active Alerts (Last 24h)</title>
+      <single>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:alert earliest=-24h
+            | stats count
+          </query>
+        </search>
+        <option name="unit">alerts</option>
+        <option name="colorBy">value</option>
+        <option name="useColors">true</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>⚠️ Active Threats</title>
+      <single>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:threat status=active
+            | stats count
+          </query>
+        </search>
+        <option name="unit">threats</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>🖥️ Protected Hosts</title>
+      <single>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:device
+            | stats dc(device_id)
+          </query>
+        </search>
+        <option name="unit">hosts</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>💓 Platform Health</title>
+      <single>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:health status=healthy
+            | stats count
+          </query>
+        </search>
+        <option name="unit">systems</option>
+      </single>
+    </panel>
+  </row>
+
+  <!-- ===================== -->
+  <!-- Alerts Trend          -->
+  <!-- ===================== -->
+  <row>
+    <panel>
+      <title>📈 Alerts Trend (7 Days)</title>
+      <chart>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:alert earliest=-7d
+            | timechart span=1d count
+          </query>
+        </search>
+        <option name="charting.chart">line</option>
+        <option name="charting.axisTitleX.text">Date</option>
+        <option name="charting.axisTitleY.text">Alerts</option>
+      </chart>
+    </panel>
+  </row>
+
+  <!-- ===================== -->
+  <!-- Threat Distribution   -->
+  <!-- ===================== -->
+  <row>
+    <panel>
+      <title>🧨 Threat Severity Distribution</title>
+      <chart>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:threat
+            | stats count by severity
+          </query>
+        </search>
+        <option name="charting.chart">pie</option>
+      </chart>
+    </panel>
+
+    <panel>
+      <title>📦 Artifact Types Observed</title>
+      <chart>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:artifact
+            | stats count by artifact_type
+          </query>
+        </search>
+        <option name="charting.chart">bar</option>
+      </chart>
+    </panel>
+  </row>
+
+  <!-- ===================== -->
+  <!-- Recent Alerts Table   -->
+  <!-- ===================== -->
+  <row>
+    <panel>
+      <title>🧩 Recent High-Risk Alerts</title>
+      <table>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:alert severity IN ("High","Critical")
+            | sort -_time
+            | head 10
+            | table _time alert_id severity status device_name
+          </query>
+        </search>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+
+</form>
