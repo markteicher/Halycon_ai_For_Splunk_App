@@ -1,0 +1,109 @@
+<!--
+default/data/ui/views/halcyon_devices.xml
+
+Halcyon.ai for Splunk App — Devices Dashboard
+-->
+
+<form version="1.1" theme="light">
+  <label>📟 Devices</label>
+  <description>Endpoint and device inventory collected from Halcyon.ai</description>
+
+  <!-- ================= Filters ================= -->
+  <fieldset submitButton="false">
+    <input type="text" token="device_name">
+      <label>🔍 Device Name</label>
+    </input>
+
+    <input type="dropdown" token="tenant_id">
+      <label>🏢 Tenant</label>
+      <choice value="*">All</choice>
+      <default>*</default>
+    </input>
+  </fieldset>
+
+  <!-- ================= KPI Row ================= -->
+  <row>
+    <panel>
+      <single>
+        <title>📟 Total Devices</title>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:device
+            | stats dc(id) AS total
+          </query>
+        </search>
+        <option name="colorMode">block</option>
+        <option name="rangeColors">["#2ecc71"]</option>
+      </single>
+    </panel>
+
+    <panel>
+      <single>
+        <title>💓 Active Devices</title>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:device
+            | where isnotnull(lastHeartbeatDate)
+            | stats count
+          </query>
+        </search>
+        <option name="colorMode">block</option>
+        <option name="rangeColors">["#3498db"]</option>
+      </single>
+    </panel>
+
+    <panel>
+      <single>
+        <title>⚠️ Inactive Devices</title>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:device
+            | where isnull(lastHeartbeatDate)
+            | stats count
+          </query>
+        </search>
+        <option name="colorMode">block</option>
+        <option name="rangeColors">["#f39c12"]</option>
+      </single>
+    </panel>
+  </row>
+
+  <!-- ================= Devices Table ================= -->
+  <row>
+    <panel>
+      <title>🖥️ Device Inventory</title>
+      <table>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:device
+            | search name="$device_name$"
+            | eval lastHeartbeat=strftime(lastHeartbeatDate, "%Y-%m-%d %H:%M:%S")
+            | table id name tenantId deploymentGroup.name policyGroup.name lastHeartbeat createdDate
+            | sort name
+          </query>
+        </search>
+        <option name="count">25</option>
+        <option name="wrap">true</option>
+        <option name="drilldown">row</option>
+      </table>
+    </panel>
+  </row>
+
+  <!-- ================= Activity Timeline ================= -->
+  <row>
+    <panel>
+      <title>📈 Device Heartbeat Activity</title>
+      <chart>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:device
+            | timechart span=1d count by tenantId
+          </query>
+        </search>
+        <option name="charting.chart">line</option>
+        <option name="legend.placement">right</option>
+      </chart>
+    </panel>
+  </row>
+
+</form>
