@@ -1,0 +1,55 @@
+<!--
+default/data/ui/views/halycon_assets.xml
+Halcyon.ai for Splunk App — Assets
+-->
+
+<dashboard version="1.1" theme="dark">
+  <label>🖥️ Assets</label>
+  <description>Halcyon endpoint and asset inventory with detailed visibility.</description>
+
+  <search>
+    <query>
+      index=security_halcyon sourcetype=halcyon:asset
+    </query>
+    <earliest>-24h</earliest>
+    <latest>now</latest>
+  </search>
+
+  <row>
+    <panel>
+      <title>📋 Asset Inventory</title>
+      <table>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:asset
+            | table
+                id
+                name
+                createdDate
+                lastUpdatedDate
+                lastHeartbeatDate
+                agent.version
+                os.name
+                type
+                deploymentGroup.name
+                policyGroup.name
+                macAddresses
+                ipAddresses.value
+          </query>
+          <earliest>-24h</earliest>
+          <latest>now</latest>
+        </search>
+
+        <option name="count">25</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">row</option>
+        <option name="wrap">true</option>
+        <option name="rowNumbers">true</option>
+        <option name="totalsRow">false</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+
+</dashboard>
