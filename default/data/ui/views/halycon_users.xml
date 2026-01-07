@@ -102,9 +102,9 @@
         <search>
           <query>
             index=security_halcyon sourcetype="halcyon:user"
-            | eval blob=lower(coalesce(id,"")." ".coalesce(email,"")." ".coalesce(firstName,"")." ".coalesce(lastName,""))
+            | eval search_blob=lower(coalesce(id,"")." ".coalesce(email,"")." ".coalesce(firstName,"")." ".coalesce(lastName,""))
             | where ("$tok_role$"="*" OR role="$tok_role$")
-            | where ("$tok_user_search$"="" OR like(blob,"%".lower("$tok_user_search$")."%"))
+            | where ("$tok_user_search$"="" OR like(search_blob,"%".lower("$tok_user_search$")."%"))
             | table id email firstName lastName role
             | sort firstName lastName
           </query>
