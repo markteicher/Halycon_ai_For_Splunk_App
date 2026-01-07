@@ -1,0 +1,108 @@
+<!--
+default/data/ui/views/halcyon_device_extracted_keys.xml
+
+Halcyon.ai for Splunk App — Device Extracted Keys
+-->
+
+<form version="1.1" theme="light">
+  <label>🔑 Device Extracted Keys</label>
+  <description>Cryptographic keys extracted from devices by Halcyon.ai</description>
+
+  <!-- ================= Filters ================= -->
+  <fieldset submitButton="false">
+    <input type="text" token="device_name">
+      <label>🖥️ Device Name</label>
+    </input>
+
+    <input type="dropdown" token="key_type">
+      <label>🔐 Key Type</label>
+      <choice value="*">All</choice>
+      <default>*</default>
+    </input>
+  </fieldset>
+
+  <!-- ================= KPI Row ================= -->
+  <row>
+    <panel>
+      <single>
+        <title>🔑 Total Extracted Keys</title>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:device_extracted_key
+            | stats count
+          </query>
+        </search>
+        <option name="colorMode">block</option>
+        <option name="rangeColors">["#9b59b6"]</option>
+      </single>
+    </panel>
+
+    <panel>
+      <single>
+        <title>🖥️ Devices With Keys</title>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:device_extracted_key
+            | stats dc(deviceId)
+          </query>
+        </search>
+        <option name="colorMode">block</option>
+        <option name="rangeColors">["#3498db"]</option>
+      </single>
+    </panel>
+
+    <panel>
+      <single>
+        <title>⚠️ High-Risk Keys</title>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:device_extracted_key
+            | where riskLevel="High"
+            | stats count
+          </query>
+        </search>
+        <option name="colorMode">block</option>
+        <option name="rangeColors">["#e74c3c"]</option>
+      </single>
+    </panel>
+  </row>
+
+  <!-- ================= Extracted Keys Table ================= -->
+  <row>
+    <panel>
+      <title>📋 Extracted Key Inventory</title>
+      <table>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:device_extracted_key
+            | search keyType="$key_type$"
+            | eval extractedDate=strftime(extractedDate, "%Y-%m-%d %H:%M:%S")
+            | table id deviceId deviceName keyType algorithm keyLength riskLevel extractedDate
+            | sort -extractedDate
+          </query>
+        </search>
+        <option name="count">25</option>
+        <option name="wrap">true</option>
+        <option name="drilldown">row</option>
+      </table>
+    </panel>
+  </row>
+
+  <!-- ================= Key Extraction Trend ================= -->
+  <row>
+    <panel>
+      <title>📈 Key Extraction Activity</title>
+      <chart>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:device_extracted_key
+            | timechart span=1d count
+          </query>
+        </search>
+        <option name="charting.chart">column</option>
+        <option name="legend.placement">none</option>
+      </chart>
+    </panel>
+  </row>
+
+</form>
