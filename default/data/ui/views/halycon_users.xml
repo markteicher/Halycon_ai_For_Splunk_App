@@ -1,0 +1,79 @@
+<form version="1.1" theme="light">
+  <label>👥 Halcyon Users</label>
+  <description>Tenant-level user accounts, roles, and access visibility</description>
+
+  <row>
+    <panel>
+      <title>👥 Tenant Users</title>
+
+      <table>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:tenant_user
+            | fields id email firstName lastName role tenantId status createdDate lastLoginDate
+            | sort email
+          </query>
+        </search>
+
+        <option name="count">25</option>
+        <option name="drilldown">row</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+
+  <row>
+    <panel>
+      <title>📊 Users by Role</title>
+
+      <chart>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:tenant_user
+            | stats count by role
+            | sort -count
+          </query>
+        </search>
+
+        <option name="charting.chart">pie</option>
+        <option name="charting.legend.placement">right</option>
+      </chart>
+    </panel>
+
+    <panel>
+      <title>📊 Users by Status</title>
+
+      <chart>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:tenant_user
+            | stats count by status
+          </query>
+        </search>
+
+        <option name="charting.chart">column</option>
+        <option name="charting.legend.placement">bottom</option>
+      </chart>
+    </panel>
+  </row>
+
+  <row>
+    <panel>
+      <title>🕒 Recently Active Users</title>
+
+      <table>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:tenant_user
+            | where isnotnull(lastLoginDate)
+            | sort -lastLoginDate
+            | fields email role lastLoginDate
+          </query>
+        </search>
+
+        <option name="count">10</option>
+      </table>
+    </panel>
+  </row>
+
+</form>
