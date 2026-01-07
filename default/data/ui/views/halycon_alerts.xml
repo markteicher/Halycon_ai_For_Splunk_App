@@ -1,0 +1,138 @@
+<!--
+default/data/ui/views/halycon_alerts.xml
+Halcyon.ai for Splunk App — Alerts
+-->
+
+<form version="1.1" theme="light">
+  <label>🚨 Halcyon.ai — Alerts</label>
+  <description>Investigate ransomware alerts, severity, and response status.</description>
+
+  <!-- ===================== -->
+  <!-- Alert KPIs            -->
+  <!-- ===================== -->
+  <row>
+    <panel>
+      <title>🚨 Total Alerts (24h)</title>
+      <single>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:alert earliest=-24h
+            | stats count
+          </query>
+        </search>
+        <option name="unit">alerts</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>🔥 Critical Alerts</title>
+      <single>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:alert severity=Critical earliest=-24h
+            | stats count
+          </query>
+        </search>
+        <option name="unit">critical</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>🟡 Open Alerts</title>
+      <single>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:alert status=Open
+            | stats count
+          </query>
+        </search>
+        <option name="unit">open</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>✅ Resolved Alerts</title>
+      <single>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:alert status=Resolved earliest=-24h
+            | stats count
+          </query>
+        </search>
+        <option name="unit">resolved</option>
+      </single>
+    </panel>
+  </row>
+
+  <!-- ===================== -->
+  <!-- Alert Trends          -->
+  <!-- ===================== -->
+  <row>
+    <panel>
+      <title>📈 Alert Volume Trend (7 Days)</title>
+      <chart>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:alert earliest=-7d
+            | timechart span=1d count
+          </query>
+        </search>
+        <option name="charting.chart">line</option>
+        <option name="charting.axisTitleX.text">Date</option>
+        <option name="charting.axisTitleY.text">Alerts</option>
+      </chart>
+    </panel>
+  </row>
+
+  <!-- ===================== -->
+  <!-- Severity Breakdown    -->
+  <!-- ===================== -->
+  <row>
+    <panel>
+      <title>⚠️ Alerts by Severity</title>
+      <chart>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:alert
+            | stats count by severity
+          </query>
+        </search>
+        <option name="charting.chart">bar</option>
+      </chart>
+    </panel>
+
+    <panel>
+      <title>🧩 Alerts by Status</title>
+      <chart>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:alert
+            | stats count by status
+          </query>
+        </search>
+        <option name="charting.chart">pie</option>
+      </chart>
+    </panel>
+  </row>
+
+  <!-- ===================== -->
+  <!-- Alerts Table          -->
+  <!-- ===================== -->
+  <row>
+    <panel>
+      <title>🗂️ Alert Details</title>
+      <table>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:alert
+            | sort -_time
+            | table _time alert_id severity status alert_type device_name policy_name
+          </query>
+        </search>
+        <option name="wrap">true</option>
+        <option name="drilldown">row</option>
+      </table>
+    </panel>
+  </row>
+
+</form>
