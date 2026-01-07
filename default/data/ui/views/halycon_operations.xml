@@ -1,0 +1,173 @@
+<!--
+default/data/ui/views/halycon_operations.xml
+Halcyon.ai for Splunk App — Operations
+-->
+
+<form version="1.1" theme="light">
+  <label>⚙️ Halcyon.ai — Operations</label>
+  <description>Operational visibility into data ingestion, API activity, and platform stability.</description>
+
+  <!-- ===================== -->
+  <!-- Operational KPIs      -->
+  <!-- ===================== -->
+  <row>
+    <panel>
+      <title>📥 Events Ingested</title>
+      <single>
+        <search>
+          <query>
+            index=security_halcyon
+            | stats count
+          </query>
+        </search>
+        <option name="unit">events</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>🧭 Active Sourcetypes</title>
+      <single>
+        <search>
+          <query>
+            index=security_halcyon
+            | stats dc(sourcetype)
+          </query>
+        </search>
+        <option name="unit">types</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>🕒 Last Event Seen</title>
+      <single>
+        <search>
+          <query>
+            index=security_halcyon
+            | stats latest(_time) as last_seen
+            | eval last_seen=strftime(last_seen, "%Y-%m-%d %H:%M:%S")
+          </query>
+        </search>
+        <option name="unit">UTC</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>⚠️ Errors (24h)</title>
+      <single>
+        <search>
+          <query>
+            index=_internal source=*halcyon*
+            | stats count
+          </query>
+        </search>
+        <option name="unit">errors</option>
+      </single>
+    </panel>
+  </row>
+
+  <!-- ===================== -->
+  <!-- Ingestion Trends      -->
+  <!-- ===================== -->
+  <row>
+    <panel>
+      <title>📈 Ingestion Volume (24h)</title>
+      <chart>
+        <search>
+          <query>
+            index=security_halcyon earliest=-24h
+            | timechart span=1h count
+          </query>
+        </search>
+        <option name="charting.chart">line</option>
+        <option name="charting.axisTitleX.text">Time</option>
+        <option name="charting.axisTitleY.text">Events</option>
+      </chart>
+    </panel>
+  </row>
+
+  <!-- ===================== -->
+  <!-- Sourcetype Health     -->
+  <!-- ===================== -->
+  <row>
+    <panel>
+      <title>📊 Events by Sourcetype</title>
+      <chart>
+        <search>
+          <query>
+            index=security_halcyon
+            | stats count by sourcetype
+            | sort -count
+          </query>
+        </search>
+        <option name="charting.chart">bar</option>
+      </chart>
+    </panel>
+
+    <panel>
+      <title>🕒 Data Freshness</title>
+      <table>
+        <search>
+          <query>
+            index=security_halcyon
+            | stats latest(_time) as last_seen by sourcetype
+            | eval last_seen=strftime(last_seen, "%Y-%m-%d %H:%M:%S")
+            | sort sourcetype
+          </query>
+        </search>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+
+  <!-- ===================== -->
+  <!-- API & Input Health    -->
+  <!-- ===================== -->
+  <row>
+    <panel>
+      <title>🔌 API Activity</title>
+      <chart>
+        <search>
+          <query>
+            index=_internal source=*halcyon_input*
+            | timechart span=1h count
+          </query>
+        </search>
+        <option name="charting.chart">area</option>
+      </chart>
+    </panel>
+
+    <panel>
+      <title>🚦 Input Status</title>
+      <table>
+        <search>
+          <query>
+            index=_internal source=*halcyon_input*
+            | stats latest(status) as status latest(_time) as last_update by input_name
+            | eval last_update=strftime(last_update, "%Y-%m-%d %H:%M:%S")
+          </query>
+        </search>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+
+  <!-- ===================== -->
+  <!-- Operational Logs      -->
+  <!-- ===================== -->
+  <row>
+    <panel>
+      <title>📋 Halcyon App Logs</title>
+      <table>
+        <search>
+          <query>
+            index=_internal source=*halcyon*
+            | sort -_time
+            | table _time level message
+          </query>
+        </search>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+
+</form>
