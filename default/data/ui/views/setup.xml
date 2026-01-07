@@ -1,1 +1,176 @@
-test
+<!--
+default/data/ui/views/setup.xml
+
+Halcyon.ai for Splunk App — Setup (Splunk Simple XML)
+
+Notes:
+- This view is the UI. Persisting values typically requires:
+  - a custom REST handler (restmap.conf + setup_handler.py), OR
+  - custom JS that POSTs to your REST endpoint.
+- This setup page is wired to a custom JS file:
+  appserver/static/setup.js
+-->
+
+<form version="1.1" theme="light">
+  <label>Halcyon.ai for Splunk App — Setup</label>
+  <description>Configure API access, proxy, and data collection inputs.</description>
+
+  <!-- Load custom JS to save settings via a REST handler -->
+  <row>
+    <panel>
+      <html>
+        <div id="halcyon-setup-banner" class="alert alert-info">
+          <b>Setup:</b> Enter your Halcyon API settings and enable the data inputs you want collected.
+        </div>
+        <script src="/static/app/halcyon_for_splunk/setup.js"></script>
+      </html>
+    </panel>
+  </row>
+
+  <fieldset submitButton="true" autoRun="false">
+    <!-- ===================== -->
+    <!-- API Configuration     -->
+    <!-- ===================== -->
+    <row>
+      <panel>
+        <title>🔐 API Configuration</title>
+
+        <input type="text" token="halcyon_api_base_url">
+          <label>API Base URL</label>
+          <default>https://api.halcyon.ai</default>
+        </input>
+
+        <input type="text" token="halcyon_api_token" password="true">
+          <label>API Token (Bearer)</label>
+          <default></default>
+        </input>
+
+        <input type="dropdown" token="halcyon_verify_ssl">
+          <label>Verify SSL</label>
+          <choice value="true">true (recommended)</choice>
+          <choice value="false">false</choice>
+          <default>true</default>
+        </input>
+
+        <input type="text" token="halcyon_request_timeout">
+          <label>Request Timeout (seconds)</label>
+          <default>60</default>
+        </input>
+      </panel>
+    </row>
+
+    <!-- ===================== -->
+    <!-- Proxy Configuration   -->
+    <!-- ===================== -->
+    <row>
+      <panel>
+        <title>🌐 Proxy Configuration (Optional)</title>
+
+        <input type="dropdown" token="halcyon_use_proxy">
+          <label>Use Proxy</label>
+          <choice value="false">false</choice>
+          <choice value="true">true</choice>
+          <default>false</default>
+        </input>
+
+        <input type="text" token="halcyon_proxy_url" depends="$halcyon_use_proxy$">
+          <label>Proxy URL</label>
+          <default></default>
+        </input>
+
+        <input type="text" token="halcyon_proxy_username" depends="$halcyon_use_proxy$">
+          <label>Proxy Username</label>
+          <default></default>
+        </input>
+
+        <input type="text" token="halcyon_proxy_password" password="true" depends="$halcyon_use_proxy$">
+          <label>Proxy Password</label>
+          <default></default>
+        </input>
+      </panel>
+    </row>
+
+    <!-- ===================== -->
+    <!-- Data Inputs           -->
+    <!-- ===================== -->
+    <row>
+      <panel>
+        <title>📥 Data Inputs</title>
+        <description>Select which Halcyon datasets to collect.</description>
+
+        <input type="checkbox" token="halcyon_inputs">
+          <label>Enable Inputs</label>
+
+          <!-- Core Security Objects -->
+          <choice value="alerts">🛡️ Alerts (halcyon:alert)</choice>
+          <choice value="alert_instances">🧩 Alert Instances (halcyon:alert_instance)</choice>
+          <choice value="events">📅 Events (halcyon:event)</choice>
+          <choice value="threats">⚠️ Threats (halcyon:threat)</choice>
+          <choice value="artifacts">📦 Artifacts (halcyon:artifact)</choice>
+
+          <!-- Assets & Devices -->
+          <choice value="assets">🖥️ Assets (halcyon:asset)</choice>
+          <choice value="devices">📟 Devices (halcyon:device)</choice>
+          <choice value="device_extracted_keys">🔑 Device Extracted Keys (halcyon:device_extracted_key)</choice>
+
+          <!-- Identity & Access -->
+          <choice value="current_user">👤 Current User (halcyon:user)</choice>
+          <choice value="tenant_users">👥 Tenant Users (halcyon:tenant_user)</choice>
+          <choice value="identity_providers">🪪 Identity Providers (halcyon:identity_provider)</choice>
+
+          <!-- Tenancy & Structure -->
+          <choice value="tenants">🏢 Tenants (halcyon:tenant)</choice>
+          <choice value="subtenants">🏬 Subtenants (halcyon:subtenant)</choice>
+          <choice value="deployment_groups">🧱 Deployment Groups (halcyon:deployment_group)</choice>
+
+          <!-- Policy & Control Plane -->
+          <choice value="policies">📜 Policies (halcyon:policy)</choice>
+          <choice value="policy_groups">🗂️ Policy Groups (halcyon:policy_group)</choice>
+          <choice value="overrides">🛠️ Overrides (halcyon:override)</choice>
+          <choice value="tags">🏷️ Tags (halcyon:tag)</choice>
+
+          <!-- Ops & Automation -->
+          <choice value="jobs">🧰 Jobs (halcyon:job)</choice>
+          <choice value="webhooks">🔔 Webhooks (halcyon:webhook)</choice>
+          <choice value="integrations">🔌 Integrations (halcyon:integration)</choice>
+          <choice value="installers">⬇️ Installers (halcyon:installer)</choice>
+
+          <!-- Platform Health & Meta -->
+          <choice value="health">💓 Health (halcyon:health)</choice>
+          <choice value="auth_events">🔐 Auth Events (halcyon:auth_event)</choice>
+
+          <!-- Defaults (reasonable starting point) -->
+          <default>alerts</default>
+          <default>events</default>
+          <default>threats</default>
+          <default>artifacts</default>
+          <default>devices</default>
+          <default>assets</default>
+          <default>health</default>
+        </input>
+      </panel>
+    </row>
+
+    <!-- ===================== -->
+    <!-- Collection Settings   -->
+    <!-- ===================== -->
+    <row>
+      <panel>
+        <title>⏱️ Collection Settings</title>
+
+        <input type="text" token="halcyon_poll_interval_seconds">
+          <label>Polling Interval (seconds)</label>
+          <default>300</default>
+        </input>
+
+        <input type="text" token="halcyon_lookback_minutes">
+          <label>Lookback Window (minutes)</label>
+          <default>60</default>
+        </input>
+
+        <input type="dropdown" token="halcyon_enable_backfill">
+          <label>Enable Backfill</label>
+          <choice value="false">false</choice>
+          <choice value="true">true</choice>
+          <default>false</default>
+        </input>
