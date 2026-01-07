@@ -7,6 +7,51 @@ Full Splunk App for Halcyon.ai ransomware protection and resilience. Monitor, in
 
 This Splunk app provides real-time visibility into ransomware activity, behavioral detections, and automated response outcomes collected from Halcyon.ai without having to learn the Halycon.ai User Interface as well Halycon Query Language.
 
+
+## Halycon.ai supports the following Operating Systems:
+
+Supported Microsoft(tm) Operating System Environments
+
+- Microsoft Windows 10
+
+- Microsoft Windows 11
+
+- Microsoft Server 2012 R2 (x64)
+
+- Microsoft Server 2016
+
+- Microsoft Server 2019
+
+- Microsoft Server 2022+
+
+
+
+Supported Linux Operating System Environments:
+
+- RHEL 8
+
+- RHEL 9
+
+- RHEL binary compatible distributions
+  
+- Oracle Linux
+
+- AlmaLinux
+
+- Rocky Linux
+
+- Ubuntu 22.04
+
+- Ubuntu 24.04 LTS.
+
+- Debian 11
+
+- Debian 12
+
+- AWS Linux 2
+
+- AWS Linux 2023
+
 ## Features
 
 ### 🛡️ Core Capabilities
