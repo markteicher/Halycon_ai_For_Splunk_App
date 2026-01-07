@@ -139,7 +139,7 @@ Notes:
           <choice value="health">💓 Health (halcyon:health)</choice>
           <choice value="auth_events">🔐 Auth Events (halcyon:auth_event)</choice>
 
-          <!-- Defaults (reasonable starting point) -->
+          <!-- Defaults  -->
           <default>alerts</default>
           <default>events</default>
           <default>threats</default>
