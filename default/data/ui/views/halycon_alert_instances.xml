@@ -1,0 +1,175 @@
+<!--
+default/data/ui/views/halycon_alert_instances.xml
+Halcyon.ai for Splunk App — Alert Instances
+-->
+
+<form version="1.1" theme="light">
+  <label>🧩 Halcyon.ai — Alert Instances</label>
+  <description>Instance-level view of alert activity for investigation and triage.</description>
+
+  <!-- ===================== -->
+  <!-- Instance KPIs         -->
+  <!-- ===================== -->
+  <row>
+    <panel>
+      <title>🧩 Total Alert Instances (24h)</title>
+      <single>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:alert_instance earliest=-24h
+            | stats count
+          </query>
+        </search>
+        <option name="unit">instances</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>🔥 Critical Instances</title>
+      <single>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:alert_instance severity=Critical earliest=-24h
+            | stats count
+          </query>
+        </search>
+        <option name="unit">critical</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>🟡 Open Instances</title>
+      <single>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:alert_instance status=Open
+            | stats count
+          </query>
+        </search>
+        <option name="unit">open</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>✅ Resolved Instances</title>
+      <single>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:alert_instance status=Resolved earliest=-24h
+            | stats count
+          </query>
+        </search>
+        <option name="unit">resolved</option>
+      </single>
+    </panel>
+  </row>
+
+  <!-- ===================== -->
+  <!-- Instance Trends       -->
+  <!-- ===================== -->
+  <row>
+    <panel>
+      <title>📈 Instance Volume Trend (7 Days)</title>
+      <chart>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:alert_instance earliest=-7d
+            | timechart span=1d count
+          </query>
+        </search>
+        <option name="charting.chart">line</option>
+        <option name="charting.axisTitleX.text">Date</option>
+        <option name="charting.axisTitleY.text">Instances</option>
+      </chart>
+    </panel>
+  </row>
+
+  <!-- ===================== -->
+  <!-- Breakdown Panels      -->
+  <!-- ===================== -->
+  <row>
+    <panel>
+      <title>⚠️ Instances by Severity</title>
+      <chart>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:alert_instance
+            | stats count by severity
+            | sort -count
+          </query>
+        </search>
+        <option name="charting.chart">bar</option>
+      </chart>
+    </panel>
+
+    <panel>
+      <title>🧭 Instances by Status</title>
+      <chart>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:alert_instance
+            | stats count by status
+            | sort -count
+          </query>
+        </search>
+        <option name="charting.chart">pie</option>
+      </chart>
+    </panel>
+  </row>
+
+  <!-- ===================== -->
+  <!-- Top Entities          -->
+  <!-- ===================== -->
+  <row>
+    <panel>
+      <title>🖥️ Top Devices by Instances</title>
+      <table>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:alert_instance
+            | stats count as instances by device_name
+            | sort -instances
+            | head 25
+          </query>
+        </search>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+
+    <panel>
+      <title>📌 Top Alert Types</title>
+      <table>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:alert_instance
+            | stats count as instances by alert_type
+            | sort -instances
+            | head 25
+          </query>
+        </search>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+
+  <!-- ===================== -->
+  <!-- Instance Detail Table -->
+  <!-- ===================== -->
+  <row>
+    <panel>
+      <title>🗂️ Alert Instance Details</title>
+      <table>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:alert_instance
+            | sort -_time
+            | table _time instance_id alert_id severity status alert_type device_name hostname user_name process_name file_path ip policy_name
+          </query>
+        </search>
+        <option name="wrap">true</option>
+        <option name="drilldown">row</option>
+      </table>
+    </panel>
+  </row>
+
+</form>
