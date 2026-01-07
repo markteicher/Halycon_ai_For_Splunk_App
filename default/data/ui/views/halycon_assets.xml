@@ -1,55 +1,67 @@
-<!--
-default/data/ui/views/halycon_assets.xml
-Halcyon.ai for Splunk App — Assets
--->
-
-<dashboard version="1.1" theme="dark">
+<form version="1.1" theme="light">
   <label>🖥️ Assets</label>
-  <description>Halcyon endpoint and asset inventory with detailed visibility.</description>
-
-  <search>
-    <query>
-      index=security_halcyon sourcetype=halcyon:asset
-    </query>
-    <earliest>-24h</earliest>
-    <latest>now</latest>
-  </search>
 
   <row>
     <panel>
-      <title>📋 Asset Inventory</title>
       <table>
         <search>
           <query>
             index=security_halcyon sourcetype=halcyon:asset
-            | table
-                id
-                name
-                createdDate
-                lastUpdatedDate
-                lastHeartbeatDate
-                agent.version
-                os.name
-                type
-                deploymentGroup.name
-                policyGroup.name
-                macAddresses
-                ipAddresses.value
+            | spath
+            | eval status=case(
+                isnotnull(deletedAt), "❌ Deleted",
+                isnull(lastHeartbeatDate), "⚪ No Heartbeat",
+                now() - strptime(lastHeartbeatDate, "%Y-%m-%dT%H:%M:%SZ") &lt;= 86400, "🟢 Active (≤24h)",
+                now() - strptime(lastHeartbeatDate, "%Y-%m-%dT%H:%M:%SZ") &lt;= 604800, "🟡 Stale (≤7d)",
+                1=1, "🔴 Inactive (&gt;7d)"
+              )
+            | eval policy_owner=coalesce('policyGroup.owner',"")
+            | eval policy_owner_icon=case(
+                policy_owner="System","⚙️ System",
+                policy_owner!="","👤 " . policy_owner,
+                1=1,""
+              )
+            | rename
+                id AS "🆔 Asset ID"
+                tenantId AS "🏢 Tenant ID"
+                name AS "🖥️ Asset Name"
+                createdDate AS "🗓️ Created"
+                lastUpdatedDate AS "✏️ Updated"
+                lastHeartbeatDate AS "💓 Last Heartbeat"
+                deletedAt AS "🗑️ Deleted At"
+                status AS "🧭 Status"
+                policyGroup.id AS "📜 Policy Group ID"
+                policyGroup.name AS "📜 Policy Group"
+                policy_owner_icon AS "👤 Policy Owner"
+                deploymentGroup.id AS "🧱 Deployment Group ID"
+                deploymentGroup.name AS "🧱 Deployment Group"
+                macAddresses{} AS "🧬 MAC Addresses"
+                ipAddresses{}.value AS "🌐 IP Addresses"
+                ipAddresses{}.ipAddressType AS "📡 IP Type"
+            | fields
+                "🧭 Status"
+                "🖥️ Asset Name"
+                "🆔 Asset ID"
+                "🏢 Tenant ID"
+                "🗓️ Created"
+                "✏️ Updated"
+                "💓 Last Heartbeat"
+                "🗑️ Deleted At"
+                "📜 Policy Group"
+                "👤 Policy Owner"
+                "🧱 Deployment Group"
+                "🧬 MAC Addresses"
+                "🌐 IP Addresses"
+                "📡 IP Type"
           </query>
-          <earliest>-24h</earliest>
-          <latest>now</latest>
         </search>
 
-        <option name="count">25</option>
-        <option name="dataOverlayMode">none</option>
-        <option name="drilldown">row</option>
-        <option name="wrap">true</option>
+        <option name="count">50</option>
         <option name="rowNumbers">true</option>
-        <option name="totalsRow">false</option>
-        <option name="percentagesRow">false</option>
-        <option name="refresh.display">progressbar</option>
+        <option name="wrap">true</option>
+        <option name="drilldown">row</option>
       </table>
     </panel>
   </row>
 
-</dashboard>
+</form>
