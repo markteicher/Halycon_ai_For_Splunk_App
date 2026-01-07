@@ -1,79 +1,118 @@
 <form version="1.1" theme="light">
   <label>👥 Halcyon Users</label>
-  <description>Tenant-level user accounts, roles, and access visibility</description>
+  <description>Halcyon platform users</description>
+
+  <fieldset submitButton="false" autoRun="true">
+    <row>
+      <panel>
+        <title>🔎 Filters</title>
+
+        <input type="text" token="tok_user_search">
+          <label>Search</label>
+        </input>
+
+        <input type="dropdown" token="tok_role">
+          <label>Role</label>
+          <choice value="*">All</choice>
+          <choice value="Admin">Admin</choice>
+          <choice value="TenantAdmin">TenantAdmin</choice>
+          <choice value="PowerUser">PowerUser</choice>
+          <choice value="User">User</choice>
+          <choice value="ReadOnly">ReadOnly</choice>
+          <default>*</default>
+        </input>
+      </panel>
+    </row>
+  </fieldset>
 
   <row>
     <panel>
-      <title>👥 Tenant Users</title>
-
-      <table>
+      <title>👥 Total Users</title>
+      <single>
         <search>
           <query>
-            index=security_halcyon sourcetype=halcyon:tenant_user
-            | fields id email firstName lastName role tenantId status createdDate lastLoginDate
-            | sort email
+            index=security_halcyon sourcetype="halcyon:user"
+            | stats count
           </query>
         </search>
+        <option name="underLabel">Users</option>
+      </single>
+    </panel>
 
-        <option name="count">25</option>
-        <option name="drilldown">row</option>
-        <option name="wrap">true</option>
-      </table>
+    <panel>
+      <title>🛡️ Admin</title>
+      <single>
+        <search>
+          <query>
+            index=security_halcyon sourcetype="halcyon:user" role="Admin"
+            | stats count
+          </query>
+        </search>
+        <option name="underLabel">Admin</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>🏢 Tenant Admin</title>
+      <single>
+        <search>
+          <query>
+            index=security_halcyon sourcetype="halcyon:user" role="TenantAdmin"
+            | stats count
+          </query>
+        </search>
+        <option name="underLabel">TenantAdmin</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>👀 Read Only</title>
+      <single>
+        <search>
+          <query>
+            index=security_halcyon sourcetype="halcyon:user" role="ReadOnly"
+            | stats count
+          </query>
+        </search>
+        <option name="underLabel">ReadOnly</option>
+      </single>
     </panel>
   </row>
 
   <row>
     <panel>
       <title>📊 Users by Role</title>
-
       <chart>
         <search>
           <query>
-            index=security_halcyon sourcetype=halcyon:tenant_user
+            index=security_halcyon sourcetype="halcyon:user"
             | stats count by role
-            | sort -count
+            | sort - count
           </query>
         </search>
-
-        <option name="charting.chart">pie</option>
-        <option name="charting.legend.placement">right</option>
-      </chart>
-    </panel>
-
-    <panel>
-      <title>📊 Users by Status</title>
-
-      <chart>
-        <search>
-          <query>
-            index=security_halcyon sourcetype=halcyon:tenant_user
-            | stats count by status
-          </query>
-        </search>
-
-        <option name="charting.chart">column</option>
-        <option name="charting.legend.placement">bottom</option>
+        <option name="charting.chart">bar</option>
       </chart>
     </panel>
   </row>
 
   <row>
     <panel>
-      <title>🕒 Recently Active Users</title>
-
+      <title>🧾 Users</title>
       <table>
         <search>
           <query>
-            index=security_halcyon sourcetype=halcyon:tenant_user
-            | where isnotnull(lastLoginDate)
-            | sort -lastLoginDate
-            | fields email role lastLoginDate
+            index=security_halcyon sourcetype="halcyon:user"
+            | eval blob=lower(coalesce(id,"")." ".coalesce(email,"")." ".coalesce(firstName,"")." ".coalesce(lastName,""))
+            | where ("$tok_role$"="*" OR role="$tok_role$")
+            | where ("$tok_user_search$"="" OR like(blob,"%".lower("$tok_user_search$")."%"))
+            | table id email firstName lastName role
+            | sort firstName lastName
           </query>
         </search>
-
-        <option name="count">10</option>
+        <option name="count">50</option>
+        <option name="wrap">true</option>
+        <option name="drilldown">none</option>
       </table>
     </panel>
   </row>
-
 </form>
