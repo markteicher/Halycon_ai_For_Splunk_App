@@ -1,0 +1,114 @@
+<!--
+default/data/ui/views/halcyon_jobs.xml
+
+Halcyon.ai for Splunk App — Jobs
+-->
+
+<form version="1.1" theme="light">
+  <label>🧰 Jobs</label>
+  <description>Operational jobs executed by Halcyon.ai across tenants and devices</description>
+
+  <!-- ================= Filters ================= -->
+  <fieldset submitButton="false">
+    <input type="dropdown" token="job_status">
+      <label>📌 Job Status</label>
+      <choice value="*">All</choice>
+      <choice value="Pending">Pending</choice>
+      <choice value="Running">Running</choice>
+      <choice value="Completed">Completed</choice>
+      <choice value="Failed">Failed</choice>
+      <default>*</default>
+    </input>
+
+    <input type="dropdown" token="job_type">
+      <label>⚙️ Job Type</label>
+      <choice value="*">All</choice>
+      <default>*</default>
+    </input>
+  </fieldset>
+
+  <!-- ================= KPI Row ================= -->
+  <row>
+    <panel>
+      <single>
+        <title>🧰 Total Jobs</title>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:job
+            | stats count
+          </query>
+        </search>
+        <option name="colorMode">block</option>
+        <option name="rangeColors">["#34495e"]</option>
+      </single>
+    </panel>
+
+    <panel>
+      <single>
+        <title>🏃 Running Jobs</title>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:job status=Running
+            | stats count
+          </query>
+        </search>
+        <option name="colorMode">block</option>
+        <option name="rangeColors">["#3498db"]</option>
+      </single>
+    </panel>
+
+    <panel>
+      <single>
+        <title>❌ Failed Jobs</title>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:job status=Failed
+            | stats count
+          </query>
+        </search>
+        <option name="colorMode">block</option>
+        <option name="rangeColors">["#e74c3c"]</option>
+      </single>
+    </panel>
+  </row>
+
+  <!-- ================= Job Inventory ================= -->
+  <row>
+    <panel>
+      <title>📋 Job Inventory</title>
+      <table>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:job
+            | search status="$job_status$" jobType="$job_type$"
+            | eval createdDate=strftime(createdDate,"%Y-%m-%d %H:%M:%S")
+            | eval completedDate=strftime(completedDate,"%Y-%m-%d %H:%M:%S")
+            | table id jobType status createdDate completedDate initiatedBy targetType targetId
+            | sort -createdDate
+          </query>
+        </search>
+        <option name="count">25</option>
+        <option name="wrap">true</option>
+        <option name="drilldown">row</option>
+      </table>
+    </panel>
+  </row>
+
+  <!-- ================= Job Activity Trend ================= -->
+  <row>
+    <panel>
+      <title>📈 Job Activity Over Time</title>
+      <chart>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:job
+            | timechart span=1d count by status
+          </query>
+        </search>
+        <option name="charting.chart">column</option>
+        <option name="legend.placement">right</option>
+      </chart>
+    </panel>
+  </row>
+
+</form>
