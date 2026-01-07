@@ -1,0 +1,175 @@
+<!--
+default/data/ui/views/halycon_artifacts.xml
+Halcyon.ai for Splunk App — Artifacts
+-->
+
+<form version="1.1" theme="light">
+  <label>📦 Halcyon.ai — Artifacts</label>
+  <description>Artifact telemetry extracted from ransomware, malware, and intrusion activity.</description>
+
+  <!-- ===================== -->
+  <!-- Artifact KPIs         -->
+  <!-- ===================== -->
+  <row>
+    <panel>
+      <title>📦 Total Artifacts</title>
+      <single>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:artifact
+            | stats count
+          </query>
+        </search>
+        <option name="unit">artifacts</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>⚠️ Malicious Artifacts</title>
+      <single>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:artifact malicious=true
+            | stats count
+          </query>
+        </search>
+        <option name="unit">malicious</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>🧬 Unique Hashes</title>
+      <single>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:artifact
+            | stats dc(sha256)
+          </query>
+        </search>
+        <option name="unit">hashes</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>🕒 Artifacts (24h)</title>
+      <single>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:artifact earliest=-24h
+            | stats count
+          </query>
+        </search>
+        <option name="unit">new</option>
+      </single>
+    </panel>
+  </row>
+
+  <!-- ===================== -->
+  <!-- Artifact Trends       -->
+  <!-- ===================== -->
+  <row>
+    <panel>
+      <title>📈 Artifact Creation Trend</title>
+      <chart>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:artifact
+            | timechart span=1d count
+          </query>
+        </search>
+        <option name="charting.chart">line</option>
+        <option name="charting.axisTitleX.text">Date</option>
+        <option name="charting.axisTitleY.text">Artifacts</option>
+      </chart>
+    </panel>
+  </row>
+
+  <!-- ===================== -->
+  <!-- Artifact Breakdown    -->
+  <!-- ===================== -->
+  <row>
+    <panel>
+      <title>🧪 Artifacts by Type</title>
+      <chart>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:artifact
+            | stats count by type
+            | sort -count
+          </query>
+        </search>
+        <option name="charting.chart">bar</option>
+      </chart>
+    </panel>
+
+    <panel>
+      <title>⚠️ Artifacts by Severity</title>
+      <chart>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:artifact
+            | stats count by severity
+            | sort -count
+          </query>
+        </search>
+        <option name="charting.chart">pie</option>
+      </chart>
+    </panel>
+  </row>
+
+  <!-- ===================== -->
+  <!-- Artifact Intelligence -->
+  <!-- ===================== -->
+  <row>
+    <panel>
+      <title>🧬 Top Artifact Hashes</title>
+      <table>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:artifact
+            | stats count as sightings by sha256
+            | sort -sightings
+            | head 25
+          </query>
+        </search>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+
+    <panel>
+      <title>🖥️ Artifacts by Host</title>
+      <table>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:artifact
+            | stats count as artifact_count by hostname
+            | sort -artifact_count
+            | head 25
+          </query>
+        </search>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+
+  <!-- ===================== -->
+  <!-- Artifact Inventory    -->
+  <!-- ===================== -->
+  <row>
+    <panel>
+      <title>📋 Artifact Inventory</title>
+      <table>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:artifact
+            | sort -first_seen
+            | table first_seen last_seen hostname file_name file_path sha256 md5 type severity malicious size
+          </query>
+        </search>
+        <option name="wrap">true</option>
+        <option name="drilldown">row</option>
+      </table>
+    </panel>
+  </row>
+
+</form>
