@@ -1,0 +1,174 @@
+<!--
+default/data/ui/views/halycon_hosts.xml
+Halcyon.ai for Splunk App — Hosts
+-->
+
+<form version="1.1" theme="light">
+  <label>🖥️ Halcyon.ai — Hosts</label>
+  <description>Endpoint and host visibility across the Halcyon protected environment.</description>
+
+  <!-- ===================== -->
+  <!-- Host KPIs             -->
+  <!-- ===================== -->
+  <row>
+    <panel>
+      <title>🖥️ Total Hosts</title>
+      <single>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:host
+            | stats dc(host_id)
+          </query>
+        </search>
+        <option name="unit">hosts</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>🟢 Active Hosts</title>
+      <single>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:host status=Active
+            | stats count
+          </query>
+        </search>
+        <option name="unit">active</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>🔴 Inactive Hosts</title>
+      <single>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:host status=Inactive
+            | stats count
+          </query>
+        </search>
+        <option name="unit">inactive</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>⚠️ Hosts with Alerts (24h)</title>
+      <single>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:alert earliest=-24h
+            | stats dc(hostname)
+          </query>
+        </search>
+        <option name="unit">hosts</option>
+      </single>
+    </panel>
+  </row>
+
+  <!-- ===================== -->
+  <!-- Host Trends           -->
+  <!-- ===================== -->
+  <row>
+    <panel>
+      <title>📈 Host Onboarding Trend</title>
+      <chart>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:host
+            | timechart span=1d dc(host_id)
+          </query>
+        </search>
+        <option name="charting.chart">line</option>
+        <option name="charting.axisTitleX.text">Date</option>
+        <option name="charting.axisTitleY.text">Hosts</option>
+      </chart>
+    </panel>
+  </row>
+
+  <!-- ===================== -->
+  <!-- Host Breakdown        -->
+  <!-- ===================== -->
+  <row>
+    <panel>
+      <title>🧬 Hosts by OS</title>
+      <chart>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:host
+            | stats count by os
+            | sort -count
+          </query>
+        </search>
+        <option name="charting.chart">bar</option>
+      </chart>
+    </panel>
+
+    <panel>
+      <title>🏢 Hosts by Tenant</title>
+      <chart>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:host
+            | stats count by tenant_name
+            | sort -count
+          </query>
+        </search>
+        <option name="charting.chart">pie</option>
+      </chart>
+    </panel>
+  </row>
+
+  <!-- ===================== -->
+  <!-- Host Risk Analysis    -->
+  <!-- ===================== -->
+  <row>
+    <panel>
+      <title>⚠️ Top Hosts by Alert Volume</title>
+      <table>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:alert
+            | stats count as alert_count by hostname
+            | sort -alert_count
+            | head 25
+          </query>
+        </search>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+
+    <panel>
+      <title>🔥 Hosts by Threat Severity</title>
+      <chart>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:threat
+            | stats count by hostname severity
+            | sort -count
+          </query>
+        </search>
+        <option name="charting.chart">stacked_bar</option>
+      </chart>
+    </panel>
+  </row>
+
+  <!-- ===================== -->
+  <!-- Host Detail Table     -->
+  <!-- ===================== -->
+  <row>
+    <panel>
+      <title>📋 Host Inventory</title>
+      <table>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:host
+            | sort -last_seen
+            | table last_seen hostname host_id os os_version ip_address status agent_version tenant_name risk_score
+          </query>
+        </search>
+        <option name="wrap">true</option>
+        <option name="drilldown">row</option>
+      </table>
+    </panel>
+  </row>
+
+</form>
