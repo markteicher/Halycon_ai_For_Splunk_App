@@ -1,0 +1,175 @@
+<!--
+default/data/ui/views/halycon_threats.xml
+Halcyon.ai for Splunk App — Threats
+-->
+
+<form version="1.1" theme="light">
+  <label>⚠️ Halcyon.ai — Threats</label>
+  <description>Threat intelligence and ransomware activity observed by the Halcyon platform.</description>
+
+  <!-- ===================== -->
+  <!-- Threat KPIs           -->
+  <!-- ===================== -->
+  <row>
+    <panel>
+      <title>⚠️ Total Threats (24h)</title>
+      <single>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:threat earliest=-24h
+            | stats count
+          </query>
+        </search>
+        <option name="unit">threats</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>🔥 High / Critical Threats</title>
+      <single>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:threat severity IN ("High","Critical") earliest=-24h
+            | stats count
+          </query>
+        </search>
+        <option name="unit">severe</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>🟡 Active Threats</title>
+      <single>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:threat status=Active
+            | stats count
+          </query>
+        </search>
+        <option name="unit">active</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>✅ Mitigated Threats</title>
+      <single>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:threat status=Mitigated earliest=-24h
+            | stats count
+          </query>
+        </search>
+        <option name="unit">mitigated</option>
+      </single>
+    </panel>
+  </row>
+
+  <!-- ===================== -->
+  <!-- Threat Trends         -->
+  <!-- ===================== -->
+  <row>
+    <panel>
+      <title>📈 Threat Activity Trend (7 Days)</title>
+      <chart>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:threat earliest=-7d
+            | timechart span=1d count
+          </query>
+        </search>
+        <option name="charting.chart">line</option>
+        <option name="charting.axisTitleX.text">Date</option>
+        <option name="charting.axisTitleY.text">Threats</option>
+      </chart>
+    </panel>
+  </row>
+
+  <!-- ===================== -->
+  <!-- Threat Breakdown      -->
+  <!-- ===================== -->
+  <row>
+    <panel>
+      <title>⚠️ Threats by Severity</title>
+      <chart>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:threat
+            | stats count by severity
+            | sort -count
+          </query>
+        </search>
+        <option name="charting.chart">bar</option>
+      </chart>
+    </panel>
+
+    <panel>
+      <title>🧬 Threats by Category</title>
+      <chart>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:threat
+            | stats count by category
+            | sort -count
+          </query>
+        </search>
+        <option name="charting.chart">pie</option>
+      </chart>
+    </panel>
+  </row>
+
+  <!-- ===================== -->
+  <!-- Impact Analysis       -->
+  <!-- ===================== -->
+  <row>
+    <panel>
+      <title>🖥️ Top Affected Hosts</title>
+      <table>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:threat
+            | stats count as threat_count by hostname
+            | sort -threat_count
+            | head 25
+          </query>
+        </search>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+
+    <panel>
+      <title>🧑‍💻 Top Affected Users</title>
+      <table>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:threat
+            | stats count as threat_count by user_name
+            | sort -threat_count
+            | head 25
+          </query>
+        </search>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+
+  <!-- ===================== -->
+  <!-- Threat Detail Table   -->
+  <!-- ===================== -->
+  <row>
+    <panel>
+      <title>🗂️ Threat Details</title>
+      <table>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:threat
+            | sort -_time
+            | table _time threat_id name category severity status tactic technique hostname device_id user_name file_name process_name ip remediation_action
+          </query>
+        </search>
+        <option name="wrap">true</option>
+        <option name="drilldown">row</option>
+      </table>
+    </panel>
+  </row>
+
+</form>
