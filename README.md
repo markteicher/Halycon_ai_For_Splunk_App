@@ -120,10 +120,6 @@ Halcyon_For_Splunk_App/
 │   ├── halcyon_input.py
 │   ├── halcyon_setup_handler.py
 │   └── halcyon_validation.py
-├── lookups/
-│   ├── halcyon_severity_levels.csv
-│   ├── halcyon_alert_types.csv
-│   └── halcyon_artifact_types.csv
 ├── metadata/
 │   ├── default.meta
 │   └── local.meta
