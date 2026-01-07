@@ -6,6 +6,7 @@ Halcyon is a full cycle agent that protects against ransomware, identifying and 
 Full Splunk App for Halcyon.ai ransomware protection and resilience. 
 
 This Splunk app provides the ability to monitor, investigate, and operationalize Halcyon alerts, artifacts, detections, response actions, and platform health using the Halcyon API.  
+
 Real-time visibility into ransomware activity, behavioral detections, and automated response outcomes collected from Halcyon.ai without having to learn the Halycon.ai User Interface as well Halycon Filtering User Interface Dynamics.
 
 
