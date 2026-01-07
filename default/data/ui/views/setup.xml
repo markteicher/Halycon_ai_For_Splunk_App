@@ -57,15 +57,15 @@ Halcyon.ai for Splunk App — Setup
           <default>false</default>
         </input>
 
-        <input type="text" token="halcyon_proxy_url" depends="$halcyon_use_proxy$=true">
+        <input type="text" token="halcyon_proxy_url" depends="$halcyon_use_proxy$">
           <label>Proxy URL</label>
         </input>
 
-        <input type="text" token="halcyon_proxy_username" depends="$halcyon_use_proxy$=true">
+        <input type="text" token="halcyon_proxy_username" depends="$halcyon_use_proxy$">
           <label>Proxy Username</label>
         </input>
 
-        <input type="password" token="halcyon_proxy_password" depends="$halcyon_use_proxy$=true">
+        <input type="password" token="halcyon_proxy_password" depends="$halcyon_use_proxy$">
           <label>Proxy Password</label>
         </input>
       </panel>
@@ -110,7 +110,13 @@ Halcyon.ai for Splunk App — Setup
           <choice value="health">💓 Health</choice>
           <choice value="auth_events">🔐 Auth Events</choice>
 
-          <default>alerts,events,threats,artifacts,devices,assets,health</default>
+          <default>alerts</default>
+          <default>events</default>
+          <default>threats</default>
+          <default>artifacts</default>
+          <default>devices</default>
+          <default>assets</default>
+          <default>health</default>
         </input>
       </panel>
     </row>
