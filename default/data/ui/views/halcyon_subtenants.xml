@@ -1,0 +1,97 @@
+<form version="1.1" theme="light">
+  <label>🏬 Subtenants</label>
+  <description>Subtenant hierarchy and structure within the Halcyon.ai platform</description>
+
+  <!-- ================= Filters ================= -->
+  <fieldset submitButton="false">
+    <input type="text" token="tok_subtenant_search">
+      <label>🔍 Subtenant Name</label>
+    </input>
+
+    <input type="dropdown" token="tok_parent_tenant">
+      <label>🏢 Parent Tenant</label>
+      <choice value="*">All</choice>
+      <search>
+        <query>
+          index=security_halycon sourcetype="halcyon:subtenant"
+          | stats count by tenantId
+          | sort tenantId
+          | fields tenantId
+        </query>
+      </search>
+      <fieldForLabel>tenantId</fieldForLabel>
+      <fieldForValue>tenantId</fieldForValue>
+      <default>*</default>
+    </input>
+  </fieldset>
+
+  <!-- ================= KPI ROW ================= -->
+  <row>
+    <panel>
+      <single>
+        <title>🏬 Total Subtenants</title>
+        <search>
+          <query>
+            index=security_halycon sourcetype="halcyon:subtenant"
+            | stats count
+          </query>
+        </search>
+        <option name="underLabel">Subtenants</option>
+      </single>
+    </panel>
+
+    <panel>
+      <single>
+        <title>🏢 Parent Tenants</title>
+        <search>
+          <query>
+            index=security_halycon sourcetype="halcyon:subtenant"
+            | stats dc(tenantId)
+          </query>
+        </search>
+        <option name="underLabel">Tenants</option>
+      </single>
+    </panel>
+  </row>
+
+  <!-- ================= SUBTENANT INVENTORY ================= -->
+  <row>
+    <panel>
+      <title>📋 Subtenant Inventory</title>
+      <table>
+        <search>
+          <query>
+            index=security_halycon sourcetype="halcyon:subtenant"
+            | eval blob=lower(coalesce(id,"")." ".coalesce(name,""))
+            | where ("$tok_parent_tenant$"="*" OR tenantId="$tok_parent_tenant$")
+            | where ("$tok_subtenant_search$"="" OR like(blob,"%".lower("$tok_subtenant_search$")."%"))
+            | eval created=strftime(createdDate,"%Y-%m-%d %H:%M:%S")
+            | table id name tenantId created
+            | sort name
+          </query>
+        </search>
+        <option name="count">50</option>
+        <option name="wrap">true</option>
+        <option name="drilldown">row</option>
+      </table>
+    </panel>
+  </row>
+
+  <!-- ================= SUBTENANT GROWTH ================= -->
+  <row>
+    <panel>
+      <title>📈 Subtenant Creation Trend</title>
+      <chart>
+        <search>
+          <query>
+            index=security_halycon sourcetype="halcyon:subtenant"
+            | timechart span=1d count
+          </query>
+        </search>
+        <option name="charting.chart">column</option>
+        <option name="legend.placement">none</option>
+      </chart>
+    </panel>
+  </row>
+
+</form>
