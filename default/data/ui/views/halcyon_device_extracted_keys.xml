@@ -1,101 +1,94 @@
 <!--
 default/data/ui/views/halcyon_device_extracted_keys.xml
-
 Halcyon.ai for Splunk App — Device Extracted Keys
 -->
 
 <form version="1.1" theme="light">
   <label>🔑 Device Extracted Keys</label>
-  <description>Cryptographic keys extracted from devices by Halcyon.ai</description>
+  <description>Cryptographic keys extracted from devices</description>
 
   <!-- ================= Filters ================= -->
   <fieldset submitButton="false">
-    <input type="text" token="device_name">
-      <label>🖥️ Device Name</label>
+    <input type="text" token="tok_device">
+      <label>🖥️ Device</label>
     </input>
 
-    <input type="dropdown" token="key_type">
+    <input type="dropdown" token="tok_key_type">
       <label>🔐 Key Type</label>
       <choice value="*">All</choice>
+      <search>
+        <query>
+          index=security_halcyon sourcetype="halcyon:device_extracted_key"
+          | stats count by keyType
+          | sort keyType
+          | fields keyType
+        </query>
+      </search>
+      <fieldForLabel>keyType</fieldForLabel>
+      <fieldForValue>keyType</fieldForValue>
       <default>*</default>
     </input>
   </fieldset>
 
-  <!-- ================= KPI Row ================= -->
+  <!-- ================= KPI ROW ================= -->
   <row>
     <panel>
+      <title>🔑 Total Keys</title>
       <single>
-        <title>🔑 Total Extracted Keys</title>
         <search>
           <query>
-            index=security_halcyon sourcetype=halcyon:device_extracted_key
+            index=security_halcyon sourcetype="halcyon:device_extracted_key"
             | stats count
           </query>
         </search>
-        <option name="colorMode">block</option>
-        <option name="rangeColors">["#9b59b6"]</option>
+        <option name="underLabel">Keys</option>
       </single>
     </panel>
 
     <panel>
+      <title>🖥️ Devices</title>
       <single>
-        <title>🖥️ Devices With Keys</title>
         <search>
           <query>
-            index=security_halcyon sourcetype=halcyon:device_extracted_key
+            index=security_halcyon sourcetype="halcyon:device_extracted_key"
             | stats dc(deviceId)
           </query>
         </search>
-        <option name="colorMode">block</option>
-        <option name="rangeColors">["#3498db"]</option>
-      </single>
-    </panel>
-
-    <panel>
-      <single>
-        <title>⚠️ High-Risk Keys</title>
-        <search>
-          <query>
-            index=security_halcyon sourcetype=halcyon:device_extracted_key
-            | where riskLevel="High"
-            | stats count
-          </query>
-        </search>
-        <option name="colorMode">block</option>
-        <option name="rangeColors">["#e74c3c"]</option>
+        <option name="underLabel">Devices</option>
       </single>
     </panel>
   </row>
 
-  <!-- ================= Extracted Keys Table ================= -->
+  <!-- ================= KEY INVENTORY ================= -->
   <row>
     <panel>
-      <title>📋 Extracted Key Inventory</title>
+      <title>📋 Extracted Keys</title>
       <table>
         <search>
           <query>
-            index=security_halcyon sourcetype=halcyon:device_extracted_key
-            | search keyType="$key_type$"
-            | eval extractedDate=strftime(extractedDate, "%Y-%m-%d %H:%M:%S")
-            | table id deviceId deviceName keyType algorithm keyLength riskLevel extractedDate
-            | sort -extractedDate
+            index=security_halcyon sourcetype="halcyon:device_extracted_key"
+            | where ("$tok_key_type$"="*" OR keyType="$tok_key_type$")
+            | search deviceName="*$tok_device$*"
+            | eval extracted=strftime(extractedDate,"%Y-%m-%d %H:%M:%S")
+            | table id deviceId deviceName keyType extracted
+            | sort -extracted
           </query>
         </search>
-        <option name="count">25</option>
+        <option name="count">50</option>
         <option name="wrap">true</option>
         <option name="drilldown">row</option>
       </table>
     </panel>
   </row>
 
-  <!-- ================= Key Extraction Trend ================= -->
+  <!-- ================= ACTIVITY TREND ================= -->
   <row>
     <panel>
       <title>📈 Key Extraction Activity</title>
       <chart>
         <search>
           <query>
-            index=security_halcyon sourcetype=halcyon:device_extracted_key
+            index=security_halcyon sourcetype="halcyon:device_extracted_key"
             | timechart span=1d count
           </query>
         </search>
