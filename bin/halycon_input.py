@@ -27,7 +27,7 @@ from splunklib.modularinput import Script, Scheme, Argument, Event, EventWriter,
 
 APP_NAME = "Halcyon_ai_for_Splunk"
 DEFAULT_BASE_URL = "https://api.halcyon.ai"
-DEFAULT_INDEX = "security_halcyon"
+DEFAULT_INDEX = "security_halycon"
 
 DEFAULT_TIMEOUT_SECONDS = 60
 DEFAULT_PAGE_SIZE = 200
@@ -66,42 +66,42 @@ class EndpointSpec:
 
 ENDPOINTS: List[EndpointSpec] = [
     # Core Security Objects
-    EndpointSpec("alerts",               "halcyon:alert",             "/v2/alerts",               cadence_seconds=3600),
-    EndpointSpec("alert_instances",      "halcyon:alert_instance",    "/v2/alert-instances",      cadence_seconds=3600),
-    EndpointSpec("events",               "halcyon:event",             "/v2/events",               cadence_seconds=3600),
-    EndpointSpec("threats",              "halcyon:threat",            "/v2/threats",              cadence_seconds=21600),
-    EndpointSpec("alert_artifacts",      "halcyon:artifact",          "/v2/alerts/artifacts",     cadence_seconds=3600),
+    EndpointSpec("alerts",               "halcyon:alert",              "/v2/alerts",                cadence_seconds=3600),
+    EndpointSpec("alert_instances",      "halcyon:alert_instance",     "/v2/alert-instances",       cadence_seconds=3600),
+    EndpointSpec("events",               "halcyon:event",              "/v2/events",                cadence_seconds=3600),
+    EndpointSpec("event_metrics",        "halcyon:event_metrics",      "/search/events/metrics",    cadence_seconds=3600),
+    EndpointSpec("threats",              "halcyon:threat",             "/v2/threats",               cadence_seconds=21600),
+    EndpointSpec("alert_artifacts",      "halcyon:artifact",           "/v2/alerts/artifacts",      cadence_seconds=3600),
 
     # Assets & Devices
-    EndpointSpec("assets",               "halcyon:asset",             "/v2/assets",               cadence_seconds=21600),
-    EndpointSpec("devices",              "halcyon:device",            "/v2/devices",              cadence_seconds=3600),
+    EndpointSpec("assets",               "halcyon:asset",              "/v2/assets",                cadence_seconds=21600),
+    EndpointSpec("devices",              "halcyon:device",             "/v2/devices",               cadence_seconds=3600),
     EndpointSpec("device_extracted_keys","halcyon:device_extracted_key","/v2/device-extracted-keys", cadence_seconds=21600),
 
     # Identity & Access
-    EndpointSpec("current_user",         "halcyon:user",              "/v2/users/me",             cadence_seconds=86400),
-    EndpointSpec("tenant_users",         "halcyon:tenant_user",       "/v2/tenant-users",         cadence_seconds=21600),
-    EndpointSpec("identity_providers",   "halcyon:identity_provider", "/v2/identity-providers",   cadence_seconds=86400),
+    EndpointSpec("tenant_users",         "halcyon:tenant_user",        "/v2/tenant-users",          cadence_seconds=21600),
+    EndpointSpec("identity_providers",   "halcyon:identity_provider",  "/v2/identity-providers",    cadence_seconds=86400),
 
     # Tenancy & Structure
-    EndpointSpec("tenants",              "halcyon:tenant",            "/v2/tenants",              cadence_seconds=86400),
-    EndpointSpec("subtenants",           "halcyon:subtenant",         "/v2/subtenants",           cadence_seconds=86400),
-    EndpointSpec("deployment_groups",    "halcyon:deployment_group",  "/v2/deployment-groups",    cadence_seconds=86400),
+    EndpointSpec("tenants",              "halcyon:tenant",             "/v2/tenants",               cadence_seconds=86400),
+    EndpointSpec("subtenants",           "halcyon:subtenant",          "/v2/subtenants",            cadence_seconds=86400),
+    EndpointSpec("deployment_groups",    "halcyon:deployment_group",   "/v2/deployment-groups",     cadence_seconds=86400),
 
     # Policy & Control Plane
-    EndpointSpec("policies",             "halcyon:policy",            "/v2/policies",             cadence_seconds=86400),
-    EndpointSpec("policy_groups",        "halcyon:policy_group",      "/v2/policy-groups",        cadence_seconds=86400),
-    EndpointSpec("overrides",            "halcyon:override",          "/v2/overrides",            cadence_seconds=21600),
-    EndpointSpec("tags",                 "halcyon:tag",               "/v2/tags",                 cadence_seconds=86400),
+    EndpointSpec("policies",             "halcyon:policy",             "/v2/policies",              cadence_seconds=86400),
+    EndpointSpec("policy_groups",        "halcyon:policy_group",       "/v2/policy-groups",         cadence_seconds=86400),
+    EndpointSpec("overrides",            "halcyon:override",           "/v2/overrides",             cadence_seconds=21600),
+    EndpointSpec("tags",                 "halcyon:tag",                "/v2/tags",                  cadence_seconds=86400),
 
     # Operations & Automation
-    EndpointSpec("jobs",                 "halcyon:job",               "/v2/jobs",                 cadence_seconds=3600),
-    EndpointSpec("webhooks",             "halcyon:webhook",           "/v2/webhooks",             cadence_seconds=21600),
-    EndpointSpec("integrations",         "halcyon:integration",       "/v2/integrations",         cadence_seconds=21600),
-    EndpointSpec("installers",           "halcyon:installer",         "/v2/installers",           cadence_seconds=86400),
+    EndpointSpec("jobs",                 "halcyon:job",                "/v2/jobs",                  cadence_seconds=3600),
+    EndpointSpec("webhooks",             "halcyon:webhook",            "/v2/webhooks",              cadence_seconds=21600),
+    EndpointSpec("integrations",         "halcyon:integration",        "/v2/integrations",          cadence_seconds=21600),
+    EndpointSpec("installers",           "halcyon:installer",          "/v2/installers",            cadence_seconds=86400),
 
     # Platform Health & Meta
-    EndpointSpec("health",               "halcyon:health",            "/health",                  cadence_seconds=1800),
-    EndpointSpec("auth",                 "halcyon:auth_event",        "/v2/auth",                 cadence_seconds=86400),
+    EndpointSpec("health",               "halcyon:health",             "/health",                   cadence_seconds=1800),
+    EndpointSpec("auth",                 "halcyon:auth_event",         "/v2/auth",                  cadence_seconds=86400),
 ]
 
 
