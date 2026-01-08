@@ -1,0 +1,51 @@
+<form version="1.1" theme="light">
+  <label>🧠 Halcyon Detections</label>
+  <description>Detection logic and ransomware signal visibility</description>
+
+  <row>
+    <panel>
+      <title>🧠 Total Detections</title>
+      <single>
+        <search>
+          <query>
+            index=security_halcyon sourcetype="halcyon:detection"
+            | stats count
+          </query>
+        </search>
+        <option name="underLabel">Detections</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>⚠️ Detections by Severity</title>
+      <chart>
+        <search>
+          <query>
+            index=security_halcyon sourcetype="halcyon:detection"
+            | stats count by severity
+            | sort - count
+          </query>
+        </search>
+        <option name="charting.chart">bar</option>
+      </chart>
+    </panel>
+  </row>
+
+  <row>
+    <panel>
+      <title>📋 Detection Details</title>
+      <table>
+        <search>
+          <query>
+            index=security_halcyon sourcetype="halcyon:detection"
+            | table id name severity status createdDate assetId
+            | sort - createdDate
+          </query>
+        </search>
+        <option name="count">50</option>
+        <option name="wrap">true</option>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+</form>
