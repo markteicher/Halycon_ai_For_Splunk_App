@@ -1,0 +1,51 @@
+<form version="1.1" theme="light">
+  <label>🗂️ Halcyon Policy Groups</label>
+  <description>Logical groupings of Halcyon security policies</description>
+
+  <row>
+    <panel>
+      <title>🗂️ Total Policy Groups</title>
+      <single>
+        <search>
+          <query>
+            index=security_halcyon sourcetype="halcyon:policy_group"
+            | stats count
+          </query>
+        </search>
+        <option name="underLabel">Policy Groups</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>📊 Policies per Group</title>
+      <chart>
+        <search>
+          <query>
+            index=security_halcyon sourcetype="halcyon:policy"
+            | stats count by policyGroup.name
+            | sort - count
+          </query>
+        </search>
+        <option name="charting.chart">bar</option>
+      </chart>
+    </panel>
+  </row>
+
+  <row>
+    <panel>
+      <title>📋 Policy Group Details</title>
+      <table>
+        <search>
+          <query>
+            index=security_halcyon sourcetype="halcyon:policy_group"
+            | table id name description createdDate lastUpdatedDate
+            | sort name
+          </query>
+        </search>
+        <option name="count">50</option>
+        <option name="wrap">true</option>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+</form>
