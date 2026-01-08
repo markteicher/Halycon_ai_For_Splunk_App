@@ -1,0 +1,49 @@
+<form version="1.1" theme="light">
+  <label>📈 Halcyon Trending</label>
+  <description>Ransomware activity trends across the environment</description>
+
+  <row>
+    <panel>
+      <title>📈 Alerts Over Time</title>
+      <chart>
+        <search>
+          <query>
+            index=security_halcyon sourcetype="halcyon:alert"
+            | timechart span=1d count
+          </query>
+        </search>
+        <option name="charting.chart">line</option>
+      </chart>
+    </panel>
+  </row>
+
+  <row>
+    <panel>
+      <title>📊 Detections Over Time</title>
+      <chart>
+        <search>
+          <query>
+            index=security_halcyon sourcetype="halcyon:detection"
+            | timechart span=1d count
+          </query>
+        </search>
+        <option name="charting.chart">line</option>
+      </chart>
+    </panel>
+  </row>
+
+  <row>
+    <panel>
+      <title>⚠️ Threats Over Time</title>
+      <chart>
+        <search>
+          <query>
+            index=security_halcyon sourcetype="halcyon:threat"
+            | timechart span=1d count
+          </query>
+        </search>
+        <option name="charting.chart">line</option>
+      </chart>
+    </panel>
+  </row>
+</form>
