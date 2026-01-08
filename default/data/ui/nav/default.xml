@@ -1,64 +1,80 @@
 <!--
 default/data/ui/nav/default.xml
-Halcyon.ai for Splunk App — Navigation (with icons)
+Halcyon.ai for Splunk App — Navigation
 -->
 
-<nav search_view="search" color="#0b3c5d">
+<nav search_view="halcyon_overview" color="#2E3B4E">
 
-  <collection label="🛡️ Halcyon.ai" icon="shield">
-    <view name="halcyon_overview" label="📊 Overview"/>
+  <!-- ========================= -->
+  <!-- Executive / Overview     -->
+  <!-- ========================= -->
+  <view name="halcyon_overview" label="📊 Overview" />
+
+  <!-- ========================= -->
+  <!-- Security Operations      -->
+  <!-- ========================= -->
+  <collection label="🛡️ Security">
+    <view name="halcyon_alerts" label="Alerts" />
+    <view name="halcyon_alert_instances" label="Alert Instances" />
+    <view name="halcyon_threats" label="Threats" />
+    <view name="halcyon_events" label="Events" />
+    <view name="halcyon_artifacts" label="Artifacts" />
   </collection>
 
-  <collection label="🚨 Security" icon="alert">
-    <view name="halcyon_alerts" label="🚨 Alerts"/>
-    <view name="halcyon_alert_instances" label="🧩 Alert Instances"/>
-    <view name="halcyon_events" label="📅 Events"/>
-    <view name="halcyon_threats" label="⚠️ Threats"/>
-    <view name="halcyon_artifacts" label="📦 Artifacts"/>
+  <!-- ========================= -->
+  <!-- Assets & Devices         -->
+  <!-- ========================= -->
+  <collection label="🖥️ Assets & Devices">
+    <view name="halcyon_assets" label="Assets" />
+    <view name="halcyon_devices" label="Devices" />
+    <view name="halcyon_device_extracted_keys" label="Device Extracted Keys" />
   </collection>
 
-  <collection label="🖥️ Assets & Devices" icon="computer">
-    <view name="halcyon_assets" label="🖥️ Assets"/>
-    <view name="halcyon_devices" label="📟 Devices"/>
-    <view name="halcyon_device_keys" label="🔑 Device Extracted Keys"/>
+  <!-- ========================= -->
+  <!-- Identity & Tenancy       -->
+  <!-- ========================= -->
+  <collection label="👥 Identity & Tenancy">
+    <view name="halcyon_users" label="Users" />
+    <view name="halcyon_tenant_users" label="Tenant Users" />
+    <view name="halcyon_identity_providers" label="Identity Providers" />
+    <view name="halcyon_tenants" label="Tenants" />
+    <view name="halcyon_subtenants" label="Subtenants" />
+    <view name="halcyon_deployment_groups" label="Deployment Groups" />
   </collection>
 
-  <collection label="👤 Identity & Access" icon="user">
-    <view name="halcyon_users" label="👤 Users"/>
-    <view name="halcyon_tenant_users" label="👥 Tenant Users"/>
-    <view name="halcyon_identity_providers" label="🪪 Identity Providers"/>
+  <!-- ========================= -->
+  <!-- Policy & Control Plane   -->
+  <!-- ========================= -->
+  <collection label="📜 Policy & Control">
+    <view name="halcyon_policies" label="Policies" />
+    <view name="halcyon_policy_groups" label="Policy Groups" />
+    <view name="halcyon_overrides" label="Overrides" />
+    <view name="halcyon_tags" label="Tags" />
   </collection>
 
-  <collection label="🏢 Tenancy" icon="enterprise">
-    <view name="halcyon_tenants" label="🏢 Tenants"/>
-    <view name="halcyon_subtenants" label="🏬 Subtenants"/>
-    <view name="halcyon_deployment_groups" label="🧱 Deployment Groups"/>
+  <!-- ========================= -->
+  <!-- Automation & Ops         -->
+  <!-- ========================= -->
+  <collection label="🧰 Automation & Ops">
+    <view name="halcyon_jobs" label="Jobs" />
+    <view name="halcyon_integrations" label="Integrations" />
+    <view name="halcyon_webhooks" label="Webhooks" />
+    <view name="halcyon_installers" label="Installers" />
   </collection>
 
-  <collection label="📜 Policy & Control" icon="document">
-    <view name="halcyon_policies" label="📜 Policies"/>
-    <view name="halcyon_policy_groups" label="🗂️ Policy Groups"/>
-    <view name="halcyon_overrides" label="🛠️ Overrides"/>
-    <view name="halcyon_tags" label="🏷️ Tags"/>
+  <!-- ========================= -->
+  <!-- Platform Health          -->
+  <!-- ========================= -->
+  <collection label="💓 Platform">
+    <view name="halcyon_health" label="Health" />
+    <view name="halcyon_operations" label="Operations" />
   </collection>
 
-  <collection label="⚙️ Operations" icon="settings">
-    <view name="halcyon_jobs" label="🧰 Jobs"/>
-    <view name="halcyon_integrations" label="🔌 Integrations"/>
-    <view name="halcyon_webhooks" label="🔔 Webhooks"/>
-    <view name="halcyon_installers" label="⬇️ Installers"/>
-    <view name="halcyon_operations" label="📈 Operations"/>
-  </collection>
-
-  <collection label="💓 Platform" icon="pulse">
-    <view name="halcyon_health" label="💓 Health"/>
-    <view name="halcyon_auth_events" label="🔐 Auth Events"/>
-    <view name="halcyon_logs" label="📜 Logs"/>
-  </collection>
-
-  <collection label="🛠️ Admin" icon="tools">
-    <view name="setup" label="⚙️ Setup"/>
-    <view name="halcyon_help" label="❓ Help"/>
+  <!-- ========================= -->
+  <!-- Administration           -->
+  <!-- ========================= -->
+  <collection label="⚙️ Administration">
+    <view name="setup" label="Setup" />
   </collection>
 
 </nav>
