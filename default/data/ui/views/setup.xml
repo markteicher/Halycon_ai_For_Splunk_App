@@ -103,47 +103,4 @@ Halcyon.ai for Splunk App — Setup
           <!-- Policy & Control Plane -->
           <choice value="policies">📜 Policies</choice>
           <choice value="policy_groups">🗂️ Policy Groups</choice>
-          <choice value="overrides">🛠️ Overrides</choice>
-          <choice value="tags">🏷️ Tags</choice>
-
-          <!-- Operations & Automation -->
-          <choice value="jobs">🧰 Jobs</choice>
-          <choice value="webhooks">🔔 Webhooks</choice>
-          <choice value="integrations">🔌 Integrations</choice>
-          <choice value="installers">⬇️ Installers</choice>
-
-          <!-- Platform Health -->
-          <choice value="health">💓 Health</choice>
-          <choice value="auth_events">🔐 Auth Events</choice>
-
-          <default>alerts,events,threats,artifacts,devices,assets,health</default>
-        </input>
-      </panel>
-    </row>
-
-    <!-- COLLECTION SETTINGS -->
-    <row>
-      <panel>
-        <title>⏱️ Collection Settings</title>
-
-        <input type="text" token="halcyon_poll_interval_seconds">
-          <label>Polling Interval (seconds)</label>
-          <default>3600</default>
-        </input>
-
-        <input type="text" token="halcyon_lookback_minutes">
-          <label>Lookback Window (minutes)</label>
-          <default>120</default>
-        </input>
-
-        <input type="dropdown" token="halcyon_enable_backfill">
-          <label>Enable Backfill</label>
-          <choice value="false">false</choice>
-          <choice value="true">true</choice>
-          <default>false</default>
-        </input>
-      </panel>
-    </row>
-
-  </fieldset>
-</form>
+          <choice value="over
