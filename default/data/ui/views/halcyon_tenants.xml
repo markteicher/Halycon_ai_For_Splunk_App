@@ -1,0 +1,55 @@
+<!--
+default/data/ui/views/halcyon_tenants.xml
+
+Halcyon.ai for Splunk App — Tenants
+-->
+
+<form version="1.1" theme="light">
+  <label>🏢 Tenants</label>
+  <description>Tenant inventory and hierarchy collected from Halcyon.ai</description>
+
+  <!-- ================= Filters ================= -->
+  <fieldset submitButton="false">
+    <input type="text" token="tok_tenant_name">
+      <label>🔍 Tenant Name</label>
+    </input>
+  </fieldset>
+
+  <!-- ================= KPI ROW ================= -->
+  <row>
+    <panel>
+      <single>
+        <title>🏢 Total Tenants</title>
+        <search>
+          <query>
+            index=security_halycon sourcetype="halcyon:tenant"
+            | stats count
+          </query>
+        </search>
+        <option name="underLabel">Tenants</option>
+      </single>
+    </panel>
+  </row>
+
+  <!-- ================= TENANT INVENTORY ================= -->
+  <row>
+    <panel>
+      <title>📋 Tenant Inventory</title>
+      <table>
+        <search>
+          <query>
+            index=security_halycon sourcetype="halcyon:tenant"
+            | search name="*$tok_tenant_name$*"
+            | eval created=strftime(createdDate,"%Y-%m-%d %H:%M:%S")
+            | table id name created status
+            | sort name
+          </query>
+        </search>
+        <option name="count">50</option>
+        <option name="wrap">true</option>
+        <option name="drilldown">row</option>
+      </table>
+    </panel>
+  </row>
+
+</form>
