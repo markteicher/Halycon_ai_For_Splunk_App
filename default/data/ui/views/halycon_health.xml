@@ -1,55 +1,51 @@
 <!--
 default/data/ui/views/halcyon_health.xml
-
 Halcyon.ai for Splunk App — Platform Health
 -->
 
 <form version="1.1" theme="light">
   <label>💓 Platform Health</label>
-  <description>API availability, ingestion health, and operational status of Halcyon.ai</description>
+  <description>API availability, ingestion stability, and Halcyon.ai operational health</description>
 
   <!-- ================= KPI ROW ================= -->
   <row>
     <panel>
+      <title>💓 Health Records</title>
       <single>
-        <title>💓 Health Events</title>
         <search>
           <query>
-            index=security_halcyon sourcetype=halcyon:health
+            index=security_halcyon sourcetype="halcyon:health"
             | stats count
           </query>
         </search>
-        <option name="colorMode">block</option>
-        <option name="rangeColors">["#2ecc71"]</option>
+        <option name="underLabel">Events</option>
       </single>
     </panel>
 
     <panel>
+      <title>🚨 Error Events</title>
       <single>
-        <title>⏱️ API Errors</title>
         <search>
           <query>
-            index=security_halcyon sourcetype=halcyon:health level=error
+            index=security_halcyon sourcetype="halcyon:health" status="error"
             | stats count
           </query>
         </search>
-        <option name="colorMode">block</option>
-        <option name="rangeColors">["#e74c3c"]</option>
+        <option name="underLabel">Errors</option>
       </single>
     </panel>
 
     <panel>
+      <title>⏱️ Last Seen</title>
       <single>
-        <title>📥 Last Ingest</title>
         <search>
           <query>
-            index=security_halcyon sourcetype=halcyon:health
+            index=security_halcyon sourcetype="halcyon:health"
             | stats latest(_time) as lastSeen
             | eval lastSeen=strftime(lastSeen,"%Y-%m-%d %H:%M:%S")
           </query>
         </search>
-        <option name="colorMode">block</option>
-        <option name="rangeColors">["#3498db"]</option>
+        <option name="underLabel">Timestamp</option>
       </single>
     </panel>
   </row>
@@ -57,34 +53,35 @@ Halcyon.ai for Splunk App — Platform Health
   <!-- ================= HEALTH EVENTS ================= -->
   <row>
     <panel>
-      <title>📋 Health Events</title>
+      <title>📋 Health Event Log</title>
       <table>
         <search>
           <query>
-            index=security_halcyon sourcetype=halcyon:health
+            index=security_halcyon sourcetype="halcyon:health"
             | eval eventTime=strftime(_time,"%Y-%m-%d %H:%M:%S")
             | table eventTime status component message
             | sort -eventTime
           </query>
         </search>
-        <option name="count">20</option>
+        <option name="count">25</option>
         <option name="wrap">true</option>
+        <option name="drilldown">none</option>
       </table>
     </panel>
   </row>
 
-  <!-- ================= ERROR TREND ================= -->
+  <!-- ================= STATUS TREND ================= -->
   <row>
     <panel>
-      <title>📈 Health & Error Trend</title>
+      <title>📈 Health Status Trend</title>
       <chart>
         <search>
           <query>
-            index=security_halcyon sourcetype=halcyon:health
+            index=security_halcyon sourcetype="halcyon:health"
             | timechart span=1h count by status
           </query>
         </search>
-        <option name="charting.chart">line</option>
+        <option name="charting.chart">column</option>
         <option name="legend.placement">right</option>
       </chart>
     </panel>
@@ -97,12 +94,13 @@ Halcyon.ai for Splunk App — Platform Health
       <chart>
         <search>
           <query>
-            index=security_halcyon sourcetype=halcyon:health latencyMs=*
+            index=security_halcyon sourcetype="halcyon:health" latencyMs=*
             | timechart span=1h avg(latencyMs) as avg_latency_ms
           </query>
         </search>
-        <option name="charting.chart">area</option>
+        <option name="charting.chart">line</option>
         <option name="charting.axisY.title">Milliseconds</option>
+        <option name="legend.placement">none</option>
       </chart>
     </panel>
   </row>
