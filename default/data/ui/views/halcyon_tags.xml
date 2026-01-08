@@ -1,0 +1,75 @@
+<form version="1.1" theme="light">
+  <label>🏷️ Halcyon Tags</label>
+  <description>Asset, policy, and organizational tagging across the Halcyon platform</description>
+
+  <fieldset submitButton="false" autoRun="true">
+    <row>
+      <panel>
+        <title>🔎 Filters</title>
+
+        <input type="text" token="tok_tag_search">
+          <label>Search</label>
+        </input>
+      </panel>
+    </row>
+  </fieldset>
+
+  <!-- KPI ROW -->
+  <row>
+    <panel>
+      <title>🏷️ Total Tags</title>
+      <single>
+        <search>
+          <query>
+            index=security_halcyon sourcetype="halcyon:tag"
+            | stats count
+          </query>
+        </search>
+        <option name="underLabel">Tags</option>
+      </single>
+    </panel>
+  </row>
+
+  <!-- TAG DISTRIBUTION -->
+  <row>
+    <panel>
+      <title>📊 Tags by Category</title>
+      <chart>
+        <search>
+          <query>
+            index=security_halcyon sourcetype="halcyon:tag"
+            | stats count by category
+            | sort - count
+          </query>
+        </search>
+        <option name="charting.chart">bar</option>
+      </chart>
+    </panel>
+  </row>
+
+  <!-- TAG TABLE -->
+  <row>
+    <panel>
+      <title>🧾 Tags</title>
+      <table>
+        <search>
+          <query>
+            index=security_halcyon sourcetype="halcyon:tag"
+            | eval blob=lower(
+                coalesce(id,"")." ".
+                coalesce(name,"")." ".
+                coalesce(category,"")." ".
+                coalesce(description,"")
+              )
+            | where ("$tok_tag_search$"="" OR like(blob,"%".lower("$tok_tag_search$")."%"))
+            | table id name category description createdDate lastUpdatedDate
+            | sort category name
+          </query>
+        </search>
+        <option name="count">50</option>
+        <option name="wrap">true</option>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+</form>
