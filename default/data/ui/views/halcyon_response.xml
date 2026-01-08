@@ -1,0 +1,51 @@
+<form version="1.1" theme="light">
+  <label>🛠️ Halcyon Response</label>
+  <description>Automated and manual response activity</description>
+
+  <row>
+    <panel>
+      <title>🛠️ Total Responses</title>
+      <single>
+        <search>
+          <query>
+            index=security_halcyon sourcetype="halcyon:response"
+            | stats count
+          </query>
+        </search>
+        <option name="underLabel">Responses</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>⚡ Response Actions</title>
+      <chart>
+        <search>
+          <query>
+            index=security_halcyon sourcetype="halcyon:response"
+            | stats count by action
+            | sort - count
+          </query>
+        </search>
+        <option name="charting.chart">bar</option>
+      </chart>
+    </panel>
+  </row>
+
+  <row>
+    <panel>
+      <title>📋 Response Activity</title>
+      <table>
+        <search>
+          <query>
+            index=security_halcyon sourcetype="halcyon:response"
+            | table id action status initiatedBy createdDate relatedDetectionId
+            | sort - createdDate
+          </query>
+        </search>
+        <option name="count">50</option>
+        <option name="wrap">true</option>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+</form>
