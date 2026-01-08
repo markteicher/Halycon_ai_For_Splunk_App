@@ -1,0 +1,81 @@
+<form version="1.1" theme="light">
+  <label>⬇️ Installers</label>
+  <description>Installer packages used to deploy Halcyon agents</description>
+
+  <!-- ================= Filters ================= -->
+  <fieldset submitButton="false">
+    <input type="text" token="tok_installer_search">
+      <label>🔍 Installer Name</label>
+    </input>
+  </fieldset>
+
+  <!-- ================= KPI ROW ================= -->
+  <row>
+    <panel>
+      <single>
+        <title>⬇️ Total Installers</title>
+        <search>
+          <query>
+            index=security_halycon sourcetype="halcyon:installer"
+            | stats count
+          </query>
+        </search>
+        <option name="underLabel">Installers</option>
+      </single>
+    </panel>
+
+    <panel>
+      <single>
+        <title>🕒 Recently Created</title>
+        <search>
+          <query>
+            index=security_halycon sourcetype="halcyon:installer"
+            | where _time &gt; relative_time(now(), "-7d")
+            | stats count
+          </query>
+        </search>
+        <option name="underLabel">Last 7 Days</option>
+      </single>
+    </panel>
+  </row>
+
+  <!-- ================= INSTALLER INVENTORY ================= -->
+  <row>
+    <panel>
+      <title>📋 Installer Inventory</title>
+      <table>
+        <search>
+          <query>
+            index=security_halycon sourcetype="halcyon:installer"
+            | eval blob=lower(coalesce(id,"")." ".coalesce(name,"")." ".coalesce(osType,""))
+            | where ("$tok_installer_search$"="" OR like(blob,"%".lower("$tok_installer_search$")."%"))
+            | eval created=strftime(createdDate,"%Y-%m-%d %H:%M:%S")
+            | table id name osType architecture version created downloadUrl
+            | sort name
+          </query>
+        </search>
+        <option name="count">50</option>
+        <option name="wrap">true</option>
+        <option name="drilldown">row</option>
+      </table>
+    </panel>
+  </row>
+
+  <!-- ================= INSTALLER ACTIVITY ================= -->
+  <row>
+    <panel>
+      <title>📈 Installer Creation Trend</title>
+      <chart>
+        <search>
+          <query>
+            index=security_halycon sourcetype="halcyon:installer"
+            | timechart span=1d count
+          </query>
+        </search>
+        <option name="charting.chart">column</option>
+        <option name="legend.placement">none</option>
+      </chart>
+    </panel>
+  </row>
+
+</form>
