@@ -1,69 +1,58 @@
 <form version="1.1" theme="light">
-  <label>🏷️ Halcyon Tags</label>
-  <description>Asset, policy, and organizational tagging across the Halcyon platform</description>
+  <label>🏷️ Tags</label>
+  <description>Tag definitions used across assets, policies, and deployments</description>
 
-  <fieldset submitButton="false" autoRun="true">
-    <row>
-      <panel>
-        <title>🔎 Filters</title>
-
-        <input type="text" token="tok_tag_search">
-          <label>Search</label>
-        </input>
-      </panel>
-    </row>
+  <!-- ================= Filters ================= -->
+  <fieldset submitButton="false">
+    <input type="text" token="tok_tag_search">
+      <label>🔍 Tag Name</label>
+    </input>
   </fieldset>
 
-  <!-- KPI ROW -->
+  <!-- ================= KPI ROW ================= -->
   <row>
     <panel>
-      <title>🏷️ Total Tags</title>
       <single>
+        <title>🏷️ Total Tags</title>
         <search>
           <query>
-            index=security_halcyon sourcetype="halcyon:tag"
+            index=security_halycon sourcetype="halcyon:tag"
             | stats count
           </query>
         </search>
         <option name="underLabel">Tags</option>
       </single>
     </panel>
-  </row>
 
-  <!-- TAG DISTRIBUTION -->
-  <row>
     <panel>
-      <title>📊 Tags by Category</title>
-      <chart>
+      <single>
+        <title>🕒 Recently Updated</title>
         <search>
           <query>
-            index=security_halcyon sourcetype="halcyon:tag"
-            | stats count by category
-            | sort - count
+            index=security_halycon sourcetype="halcyon:tag"
+            | where _time &gt; relative_time(now(), "-7d")
+            | stats count
           </query>
         </search>
-        <option name="charting.chart">bar</option>
-      </chart>
+        <option name="underLabel">Last 7 Days</option>
+      </single>
     </panel>
   </row>
 
-  <!-- TAG TABLE -->
+  <!-- ================= TAG INVENTORY ================= -->
   <row>
     <panel>
-      <title>🧾 Tags</title>
+      <title>📋 Tag Inventory</title>
       <table>
         <search>
           <query>
-            index=security_halcyon sourcetype="halcyon:tag"
-            | eval blob=lower(
-                coalesce(id,"")." ".
-                coalesce(name,"")." ".
-                coalesce(category,"")." ".
-                coalesce(description,"")
-              )
+            index=security_halycon sourcetype="halcyon:tag"
+            | eval blob=lower(coalesce(id,"")." ".coalesce(name,""))
             | where ("$tok_tag_search$"="" OR like(blob,"%".lower("$tok_tag_search$")."%"))
-            | table id name category description createdDate lastUpdatedDate
-            | sort category name
+            | eval created=strftime(createdDate,"%Y-%m-%d %H:%M:%S")
+            | eval updated=strftime(lastUpdatedDate,"%Y-%m-%d %H:%M:%S")
+            | table id name created updated
+            | sort name
           </query>
         </search>
         <option name="count">50</option>
@@ -72,4 +61,22 @@
       </table>
     </panel>
   </row>
+
+  <!-- ================= TAG ACTIVITY ================= -->
+  <row>
+    <panel>
+      <title>📈 Tag Creation Trend</title>
+      <chart>
+        <search>
+          <query>
+            index=security_halycon sourcetype="halcyon:tag"
+            | timechart span=1d count
+          </query>
+        </search>
+        <option name="charting.chart">column</option>
+        <option name="legend.placement">none</option>
+      </chart>
+    </panel>
+  </row>
+
 </form>
