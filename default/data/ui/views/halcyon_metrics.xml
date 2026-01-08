@@ -1,0 +1,81 @@
+<form version="1.1" theme="light">
+  <label>📊 Event Metrics</label>
+  <description>Aggregated event metrics returned by the Halcyon API</description>
+
+  <!-- ================= KPI COUNTERS ================= -->
+  <row>
+    <panel>
+      <single>
+        <title>📦 Total</title>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:event_metrics
+            | stats latest(total) as total
+          </query>
+        </search>
+        <option name="underLabel">Events</option>
+      </single>
+    </panel>
+
+    <panel>
+      <single>
+        <title>⛔ Blocked</title>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:event_metrics
+            | stats latest(blocked) as blocked
+          </query>
+        </search>
+        <option name="underLabel">Blocked</option>
+      </single>
+    </panel>
+
+    <panel>
+      <single>
+        <title>✅ Allowed</title>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:event_metrics
+            | stats latest(allowed) as allowed
+          </query>
+        </search>
+        <option name="underLabel">Allowed</option>
+      </single>
+    </panel>
+
+    <panel>
+      <single>
+        <title>🧪 Sandboxed</title>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:event_metrics
+            | stats latest(sandboxed) as sandboxed
+          </query>
+        </search>
+        <option name="underLabel">Sandboxed</option>
+      </single>
+    </panel>
+  </row>
+
+  <!-- ================= DUPLICATES ================= -->
+  <row>
+    <panel>
+      <title>♻️ Duplicate Metrics</title>
+      <table>
+        <search>
+          <query>
+            index=security_halcyon sourcetype=halcyon:event_metrics
+            | stats
+                latest(total_duplicates) as total_duplicates
+                latest(blocked_duplicates) as blocked_duplicates
+                latest(allowed_duplicates) as allowed_duplicates
+                latest(sandboxed_duplicates) as sandboxed_duplicates
+          </query>
+        </search>
+        <option name="wrap">true</option>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+
+</form>
