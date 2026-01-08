@@ -75,6 +75,7 @@ Halcyon.ai for Splunk App — Navigation
   <!-- ========================= -->
   <collection label="⚙️ Administration">
     <view name="setup" label="Setup" />
+    <view name="halcyon_help" label="Help" />
   </collection>
 
 </nav>
