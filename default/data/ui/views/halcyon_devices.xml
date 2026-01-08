@@ -1,5 +1,6 @@
 <!--
 default/data/ui/views/halcyon_devices.xml
+
 Halcyon.ai for Splunk App — Devices
 -->
 
@@ -13,63 +14,62 @@ Halcyon.ai for Splunk App — Devices
       <label>🔍 Device Name</label>
     </input>
 
-    <input type="dropdown" token="tok_tenant">
-      <label>🏢 Tenant</label>
+    <input type="text" token="tok_os_name">
+      <label>🧠 OS Name</label>
+    </input>
+
+    <input type="dropdown" token="tok_deleted">
+      <label>🗑️ Deleted</label>
       <choice value="*">All</choice>
-      <search>
-        <query>
-          index=security_halcyon sourcetype="halcyon:device"
-          | stats count by tenantId
-          | sort tenantId
-          | fields tenantId
-        </query>
-      </search>
-      <fieldForLabel>tenantId</fieldForLabel>
-      <fieldForValue>tenantId</fieldForValue>
-      <default>*</default>
+      <choice value="true">Deleted</choice>
+      <choice value="false">Active</choice>
+      <default>false</default>
     </input>
   </fieldset>
 
   <!-- ================= KPI ROW ================= -->
   <row>
     <panel>
-      <title>📟 Total Devices</title>
       <single>
+        <title>📟 Total Devices</title>
         <search>
           <query>
-            index=security_halcyon sourcetype="halcyon:device"
-            | stats dc(id) as total
+            index=security_halcyon sourcetype=halcyon:device
+            | stats dc(id)
           </query>
         </search>
-        <option name="underLabel">Devices</option>
+        <option name="colorMode">block</option>
+        <option name="rangeColors">["#2ecc71"]</option>
       </single>
     </panel>
 
     <panel>
-      <title>💓 Active Devices</title>
       <single>
+        <title>💓 Reporting Devices</title>
         <search>
           <query>
-            index=security_halcyon sourcetype="halcyon:device"
-            lastHeartbeatDate=*
-            | stats dc(id)
+            index=security_halcyon sourcetype=halcyon:device
+            | where isnotnull(last_heartbeat_date)
+            | stats count
           </query>
         </search>
-        <option name="underLabel">Active</option>
+        <option name="colorMode">block</option>
+        <option name="rangeColors">["#3498db"]</option>
       </single>
     </panel>
 
     <panel>
-      <title>⚠️ Inactive Devices</title>
       <single>
+        <title>⚠️ Inactive Devices</title>
         <search>
           <query>
-            index=security_halcyon sourcetype="halcyon:device"
-            NOT lastHeartbeatDate=*
-            | stats dc(id)
+            index=security_halcyon sourcetype=halcyon:device
+            | where isnull(last_heartbeat_date)
+            | stats count
           </query>
         </search>
-        <option name="underLabel">Inactive</option>
+        <option name="colorMode">block</option>
+        <option name="rangeColors">["#f39c12"]</option>
       </single>
     </panel>
   </row>
@@ -81,32 +81,48 @@ Halcyon.ai for Splunk App — Devices
       <table>
         <search>
           <query>
-            index=security_halcyon sourcetype="halcyon:device"
-            | where ("$tok_tenant$"="*" OR tenantId="$tok_tenant$")
+            index=security_halcyon sourcetype=halcyon:device
+            | eval deleted=if(isnotnull(deleted_at),"true","false")
+            | where ("$tok_deleted$"="*" OR deleted="$tok_deleted$")
             | search name="*$tok_device_name$*"
-            | eval created=strftime(createdDate,"%Y-%m-%d %H:%M:%S")
-            | eval lastHeartbeat=strftime(lastHeartbeatDate,"%Y-%m-%d %H:%M:%S")
-            | table id name tenantId deploymentGroup.name policyGroup.name lastHeartbeat created
+            | search os.name="*$tok_os_name$*"
+            | eval created_date=strftime(created_date,"%Y-%m-%d %H:%M:%S")
+            | eval last_updated_date=strftime(last_updated_date,"%Y-%m-%d %H:%M:%S")
+            | eval last_heartbeat_date=strftime(last_heartbeat_date,"%Y-%m-%d %H:%M:%S")
+            | table
+                id
+                tenant_id
+                name
+                os.name
+                os.version
+                os.os_type
+                agent.name
+                agent.version
+                system.manufacturer
+                system.model
+                last_heartbeat_date
+                created_date
+                deleted
             | sort name
           </query>
         </search>
         <option name="count">50</option>
         <option name="wrap">true</option>
-        <option name="drilldown">row</option>
+        <option name="drilldown">none</option>
       </table>
     </panel>
   </row>
 
-  <!-- ================= HEARTBEAT TREND ================= -->
+  <!-- ================= DEVICE ACTIVITY ================= -->
   <row>
     <panel>
       <title>📈 Device Heartbeat Trend</title>
       <chart>
         <search>
           <query>
-            index=security_halcyon sourcetype="halcyon:device"
-            lastHeartbeatDate=*
-            | timechart span=1d dc(id) as active_devices
+            index=security_halcyon sourcetype=halcyon:device
+            | where isnotnull(last_heartbeat_date)
+            | timechart span=1d count
           </query>
         </search>
         <option name="charting.chart">line</option>
