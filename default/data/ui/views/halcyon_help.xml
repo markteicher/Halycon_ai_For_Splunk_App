@@ -1,0 +1,129 @@
+<!--
+default/data/ui/views/halcyon_help.xml
+Halcyon.ai for Splunk App — Help
+-->
+
+<form version="1.1" theme="light">
+  <label>❓ Halcyon.ai for Splunk — Help</label>
+  <description>Operational guidance, data reference, and troubleshooting for the Halcyon.ai for Splunk App.</description>
+
+  <!-- ========================= -->
+  <!-- Overview                  -->
+  <!-- ========================= -->
+  <row>
+    <panel>
+      <title>📘 Overview</title>
+      <html>
+        <p>
+          The <b>Halcyon.ai for Splunk App</b> provides centralized, scalable visibility into ransomware
+          prevention, detection, response, and platform health data collected from the Halcyon.ai API.
+        </p>
+        <p>
+          This app is designed for enterprise-scale operations where direct use of the Halcyon UI does
+          not scale across large security, IT, or executive audiences.
+        </p>
+      </html>
+    </panel>
+  </row>
+
+  <!-- ========================= -->
+  <!-- Data Sources              -->
+  <!-- ========================= -->
+  <row>
+    <panel>
+      <title>🗂️ Data Sources & Sourcetypes</title>
+      <table>
+        <search>
+          <query>
+            | makeresults
+            | eval sourcetype="halcyon:alert", description="Security alerts"
+            | append [| makeresults | eval sourcetype="halcyon:alert_instance", description="Alert instances"]
+            | append [| makeresults | eval sourcetype="halcyon:event", description="Security events"]
+            | append [| makeresults | eval sourcetype="halcyon:threat", description="Threat intelligence"]
+            | append [| makeresults | eval sourcetype="halcyon:artifact", description="Artifacts"]
+            | append [| makeresults | eval sourcetype="halcyon:asset", description="Assets"]
+            | append [| makeresults | eval sourcetype="halcyon:device", description="Devices"]
+            | append [| makeresults | eval sourcetype="halcyon:device_extracted_key", description="Extracted device keys"]
+            | append [| makeresults | eval sourcetype="halcyon:user", description="Platform users"]
+            | append [| makeresults | eval sourcetype="halcyon:tenant_user", description="Tenant users"]
+            | append [| makeresults | eval sourcetype="halcyon:tenant", description="Tenants"]
+            | append [| makeresults | eval sourcetype="halcyon:subtenant", description="Subtenants"]
+            | append [| makeresults | eval sourcetype="halcyon:deployment_group", description="Deployment groups"]
+            | append [| makeresults | eval sourcetype="halcyon:policy", description="Policies"]
+            | append [| makeresults | eval sourcetype="halcyon:policy_group", description="Policy groups"]
+            | append [| makeresults | eval sourcetype="halcyon:override", description="Overrides"]
+            | append [| makeresults | eval sourcetype="halcyon:tag", description="Tags"]
+            | append [| makeresults | eval sourcetype="halcyon:job", description="Jobs"]
+            | append [| makeresults | eval sourcetype="halcyon:webhook", description="Webhooks"]
+            | append [| makeresults | eval sourcetype="halcyon:integration", description="Integrations"]
+            | append [| makeresults | eval sourcetype="halcyon:installer", description="Installers"]
+            | append [| makeresults | eval sourcetype="halcyon:health", description="Platform health"]
+            | table sourcetype description
+          </query>
+        </search>
+        <option name="count">25</option>
+        <option name="wrap">true</option>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+
+  <!-- ========================= -->
+  <!-- RBAC & Scale              -->
+  <!-- ========================= -->
+  <row>
+    <panel>
+      <title>👥 Identity & RBAC at Scale</title>
+      <html>
+        <p>
+          This app enables centralized visibility without requiring thousands of users to be provisioned
+          directly in Halcyon.ai.
+        </p>
+        <ul>
+          <li>Splunk RBAC controls access to dashboards and data</li>
+          <li>Halcyon roles are preserved for reporting and auditing</li>
+          <li>No CSV or PDF exports required for executive consumption</li>
+        </ul>
+      </html>
+    </panel>
+  </row>
+
+  <!-- ========================= -->
+  <!-- Troubleshooting           -->
+  <!-- ========================= -->
+  <row>
+    <panel>
+      <title>🛠️ Troubleshooting</title>
+      <html>
+        <ul>
+          <li>Verify API token validity in <b>Setup</b></li>
+          <li>Confirm inputs are enabled and polling as expected</li>
+          <li>Check Splunk internal logs for API or parsing errors</li>
+          <li>Validate network access to <code>https://api.halcyon.ai</code></li>
+        </ul>
+      </html>
+    </panel>
+  </row>
+
+  <!-- ========================= -->
+  <!-- Support                   -->
+  <!-- ========================= -->
+  <row>
+    <panel>
+      <title>📞 Support & Documentation</title>
+      <html>
+        <ul>
+          <li>
+            Halcyon API Documentation:
+            <a href="https://api.halcyon.ai/docs" target="_blank">https://api.halcyon.ai/docs</a>
+          </li>
+          <li>
+            Splunk Documentation:
+            <a href="https://docs.splunk.com" target="_blank">https://docs.splunk.com</a>
+          </li>
+        </ul>
+      </html>
+    </panel>
+  </row>
+
+</form>
