@@ -1,0 +1,65 @@
+<form version="1.1" theme="light">
+  <label>📜 Halcyon Policies</label>
+  <description>Security policies governing protection, response, and enforcement</description>
+
+  <row>
+    <panel>
+      <title>📜 Total Policies</title>
+      <single>
+        <search>
+          <query>
+            index=security_halcyon sourcetype="halcyon:policy"
+            | stats count
+          </query>
+        </search>
+        <option name="underLabel">Policies</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>📂 Policies by Group</title>
+      <chart>
+        <search>
+          <query>
+            index=security_halcyon sourcetype="halcyon:policy"
+            | stats count by policyGroup.name
+            | sort - count
+          </query>
+        </search>
+        <option name="charting.chart">bar</option>
+      </chart>
+    </panel>
+
+    <panel>
+      <title>⚙️ Policies by Status</title>
+      <chart>
+        <search>
+          <query>
+            index=security_halcyon sourcetype="halcyon:policy"
+            | stats count by status
+            | sort - count
+          </query>
+        </search>
+        <option name="charting.chart">bar</option>
+      </chart>
+    </panel>
+  </row>
+
+  <row>
+    <panel>
+      <title>📋 Policy Details</title>
+      <table>
+        <search>
+          <query>
+            index=security_halcyon sourcetype="halcyon:policy"
+            | table id name description status policyGroup.name createdDate lastUpdatedDate
+            | sort name
+          </query>
+        </search>
+        <option name="count">50</option>
+        <option name="wrap">true</option>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+</form>
