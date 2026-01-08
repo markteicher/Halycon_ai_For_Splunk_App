@@ -1,28 +1,21 @@
 <!--
 default/data/ui/views/halcyon_jobs.xml
-
 Halcyon.ai for Splunk App — Jobs
 -->
 
 <form version="1.1" theme="light">
   <label>🧰 Jobs</label>
-  <description>Operational jobs executed by Halcyon.ai across tenants and devices</description>
+  <description>Halcyon.ai job execution status and lifecycle tracking</description>
 
   <!-- ================= Filters ================= -->
-  <fieldset submitButton="false">
-    <input type="dropdown" token="job_status">
-      <label>📌 Job Status</label>
+  <fieldset submitButton="false" autoRun="true">
+    <input type="dropdown" token="tok_status">
+      <label>Status</label>
       <choice value="*">All</choice>
       <choice value="Pending">Pending</choice>
-      <choice value="Running">Running</choice>
       <choice value="Completed">Completed</choice>
       <choice value="Failed">Failed</choice>
-      <default>*</default>
-    </input>
-
-    <input type="dropdown" token="job_type">
-      <label>⚙️ Job Type</label>
-      <choice value="*">All</choice>
+      <choice value="Deleted">Deleted</choice>
       <default>*</default>
     </input>
   </fieldset>
@@ -30,44 +23,54 @@ Halcyon.ai for Splunk App — Jobs
   <!-- ================= KPI Row ================= -->
   <row>
     <panel>
+      <title>🧰 Total Jobs</title>
       <single>
-        <title>🧰 Total Jobs</title>
         <search>
           <query>
-            index=security_halcyon sourcetype=halcyon:job
+            index=security_halcyon sourcetype="halcyon:job"
             | stats count
           </query>
         </search>
-        <option name="colorMode">block</option>
-        <option name="rangeColors">["#34495e"]</option>
+        <option name="underLabel">Jobs</option>
       </single>
     </panel>
 
     <panel>
+      <title>⏳ Pending</title>
       <single>
-        <title>🏃 Running Jobs</title>
         <search>
           <query>
-            index=security_halcyon sourcetype=halcyon:job status=Running
+            index=security_halcyon sourcetype="halcyon:job" status="Pending"
             | stats count
           </query>
         </search>
-        <option name="colorMode">block</option>
-        <option name="rangeColors">["#3498db"]</option>
+        <option name="underLabel">Pending</option>
       </single>
     </panel>
 
     <panel>
+      <title>❌ Failed</title>
       <single>
-        <title>❌ Failed Jobs</title>
         <search>
           <query>
-            index=security_halcyon sourcetype=halcyon:job status=Failed
+            index=security_halcyon sourcetype="halcyon:job" status="Failed"
             | stats count
           </query>
         </search>
-        <option name="colorMode">block</option>
-        <option name="rangeColors">["#e74c3c"]</option>
+        <option name="underLabel">Failed</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>✅ Completed</title>
+      <single>
+        <search>
+          <query>
+            index=security_halcyon sourcetype="halcyon:job" status="Completed"
+            | stats count
+          </query>
+        </search>
+        <option name="underLabel">Completed</option>
       </single>
     </panel>
   </row>
@@ -79,17 +82,19 @@ Halcyon.ai for Splunk App — Jobs
       <table>
         <search>
           <query>
-            index=security_halcyon sourcetype=halcyon:job
-            | search status="$job_status$" jobType="$job_type$"
-            | eval createdDate=strftime(createdDate,"%Y-%m-%d %H:%M:%S")
-            | eval completedDate=strftime(completedDate,"%Y-%m-%d %H:%M:%S")
-            | table id jobType status createdDate completedDate initiatedBy targetType targetId
-            | sort -createdDate
+            index=security_halcyon sourcetype="halcyon:job"
+            | where ("$tok_status$"="*" OR status="$tok_status$")
+            | eval createdAt=strptime(createdAt,"%Y-%m-%dT%H:%M:%S")
+            | eval completedAt=strptime(completedAt,"%Y-%m-%dT%H:%M:%S")
+            | eval createdAt=strftime(createdAt,"%Y-%m-%d %H:%M:%S")
+            | eval completedAt=strftime(completedAt,"%Y-%m-%d %H:%M:%S")
+            | table id status createdAt completedAt
+            | sort -createdAt
           </query>
         </search>
-        <option name="count">25</option>
+        <option name="count">50</option>
         <option name="wrap">true</option>
-        <option name="drilldown">row</option>
+        <option name="drilldown">none</option>
       </table>
     </panel>
   </row>
@@ -101,7 +106,8 @@ Halcyon.ai for Splunk App — Jobs
       <chart>
         <search>
           <query>
-            index=security_halcyon sourcetype=halcyon:job
+            index=security_halcyon sourcetype="halcyon:job"
+            | eval _time=strptime(createdAt,"%Y-%m-%dT%H:%M:%S")
             | timechart span=1d count by status
           </query>
         </search>
