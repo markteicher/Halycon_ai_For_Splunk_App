@@ -1,0 +1,101 @@
+<form version="1.1" theme="light">
+  <label>🛠️ Halcyon Overrides</label>
+  <description>Policy override configuration and enforcement visibility</description>
+
+  <fieldset submitButton="false" autoRun="true">
+    <row>
+      <panel>
+        <title>🔎 Filters</title>
+
+        <input type="text" token="tok_override_search">
+          <label>Search</label>
+        </input>
+
+        <input type="dropdown" token="tok_override_status">
+          <label>Status</label>
+          <choice value="*">All</choice>
+          <choice value="Enabled">Enabled</choice>
+          <choice value="Disabled">Disabled</choice>
+          <default>*</default>
+        </input>
+      </panel>
+    </row>
+  </fieldset>
+
+  <row>
+    <panel>
+      <title>📊 Total Overrides</title>
+      <single>
+        <search>
+          <query>
+            index=security_halcyon sourcetype="halcyon:override"
+            | stats count
+          </query>
+        </search>
+        <option name="underLabel">Overrides</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>✅ Enabled</title>
+      <single>
+        <search>
+          <query>
+            index=security_halcyon sourcetype="halcyon:override" status="Enabled"
+            | stats count
+          </query>
+        </search>
+        <option name="underLabel">Enabled</option>
+      </single>
+    </panel>
+
+    <panel>
+      <title>⛔ Disabled</title>
+      <single>
+        <search>
+          <query>
+            index=security_halcyon sourcetype="halcyon:override" status="Disabled"
+            | stats count
+          </query>
+        </search>
+        <option name="underLabel">Disabled</option>
+      </single>
+    </panel>
+  </row>
+
+  <row>
+    <panel>
+      <title>📈 Overrides by Status</title>
+      <chart>
+        <search>
+          <query>
+            index=security_halcyon sourcetype="halcyon:override"
+            | stats count by status
+          </query>
+        </search>
+        <option name="charting.chart">pie</option>
+      </chart>
+    </panel>
+  </row>
+
+  <row>
+    <panel>
+      <title>🧾 Overrides</title>
+      <table>
+        <search>
+          <query>
+            index=security_halcyon sourcetype="halcyon:override"
+            | eval blob=lower(coalesce(id,"")." ".coalesce(name,"")." ".coalesce(description,""))
+            | where ("$tok_override_status$"="*" OR status="$tok_override_status$")
+            | where ("$tok_override_search$"="" OR like(blob,"%".lower("$tok_override_search$")."%"))
+            | table id name description status policyId policyGroupId createdDate lastUpdatedDate
+            | sort name
+          </query>
+        </search>
+        <option name="count">50</option>
+        <option name="wrap">true</option>
+        <option name="drilldown">none</option>
+      </table>
+    </panel>
+  </row>
+</form>
