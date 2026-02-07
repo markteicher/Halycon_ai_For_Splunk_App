@@ -1,3 +1,5 @@
+![Halcyon](docs/images/Halcyon_ai_logo.jpg)
+
 # Halcyon.ai for Splunk App
 
 ## Overview
