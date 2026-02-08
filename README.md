@@ -223,4 +223,4 @@ Halcyon_For_Splunk_App/
 - Splunk Docs: https://docs.splunk.com
 
 ## 📜 License
-Apache License 2.0
+MIT License 2.0
