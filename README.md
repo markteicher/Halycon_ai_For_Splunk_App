@@ -26,6 +26,45 @@ All functionality is implemented independently using publicly available Halycon.
 
 ## Halycon.ai supports the following Operating Systems:
 
+## 🖥️ Supported Operating Systems
+
+### 🪟 Windows Server Environments
+
+| Vendor | Operating System | Version / Build | Architecture | Supported |
+|--------|------------------|-----------------|--------------|-----------|
+| Microsoft | Windows Server | 2012 R2 | x64 | ✅ |
+| Microsoft | Windows Server | 2016 | x64 | ✅ |
+| Microsoft | Windows Server | 2019 | x64 | ✅ |
+| Microsoft | Windows Server | 2022 | x64 | ✅ |
+
+---
+
+### 🪟 Windows Desktop Environments
+
+| Vendor | Operating System | Version / Build | Architecture | Supported |
+|--------|------------------|-----------------|--------------|-----------|
+| Microsoft | Windows Desktop | Windows 10 | x64 | ✅ |
+| Microsoft | Windows Desktop | Windows 11 | x64 | ✅ |
+
+---
+
+### 🐧 Linux Environments
+
+| Vendor | Distribution | Version / Build | Architecture | Supported | Notes |
+|--------|--------------|-----------------|--------------|-----------|-------|
+| Red Hat | RHEL | 7.9 | x64 | ⚠️ | eBPF not supported |
+| Red Hat | RHEL | 8 | x64 | ✅ | |
+| Red Hat | RHEL | 9 | x64 | ✅ | |
+| Canonical | Ubuntu | 22.04 LTS | x64 | ✅ | |
+| Canonical | Ubuntu | 24.04 LTS | x64 | ✅ | |
+| Debian | Debian | 11 | x64 | ✅ | |
+| Debian | Debian | 12 | x64 | ✅ | |
+| Oracle | Oracle Linux | 8 / 9 | x64 | ✅ | RHEL compatible |
+| AlmaLinux | AlmaLinux | 8 / 9 | x64 | ✅ | RHEL compatible |
+| Rocky Linux | Rocky Linux | 8 / 9 | x64 | ✅ | RHEL compatible |
+| Amazon | Amazon Linux | 2 | x64 | ⚠️ | eBPF not supported |
+| Amazon | Amazon Linux | 2023 | x64 | ✅ | |
+
 Supported Microsoft(tm) Operating System Environments
 
 - Microsoft Windows 10
