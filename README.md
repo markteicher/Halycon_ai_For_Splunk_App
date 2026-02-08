@@ -27,6 +27,8 @@ All functionality is implemented independently using publicly available Halycon.
 
 ## 🖥️ Halyconi.ai supports the following Operating Systems:
 
+## 🖥️ Supported Operating Systems
+
 ### 🪟 Windows Server Environments
 
 | Vendor | Operating System | Version / Build | Architecture | Supported |
@@ -49,62 +51,78 @@ All functionality is implemented independently using publicly available Halycon.
 
 ### 🐧 Linux Environments
 
-| Vendor | Distribution | Version / Build | Architecture | Supported | Notes |
-|--------|--------------|-----------------|--------------|-----------|-------|
+| Vendor | Distribution | Version | Architecture | Supported | Notes |
+|--------|--------------|---------|--------------|-----------|-------|
 | Red Hat | RHEL | 7.9 | x64 | ⚠️ | eBPF not supported |
-| Red Hat | RHEL | 8 | x64 | ✅ | |
-| Red Hat | RHEL | 9 | x64 | ✅ | |
+| Red Hat | RHEL | 8.0 | x64 | ✅ | |
+| Red Hat | RHEL | 8.1 | x64 | ✅ | |
+| Red Hat | RHEL | 8.2 | x64 | ✅ | |
+| Red Hat | RHEL | 8.3 | x64 | ✅ | |
+| Red Hat | RHEL | 8.4 | x64 | ✅ | |
+| Red Hat | RHEL | 8.5 | x64 | ✅ | |
+| Red Hat | RHEL | 8.6 | x64 | ✅ | |
+| Red Hat | RHEL | 8.7 | x64 | ✅ | |
+| Red Hat | RHEL | 8.8 | x64 | ✅ | |
+| Red Hat | RHEL | 8.9 | x64 | ✅ | |
+| Red Hat | RHEL | 8.10 | x64 | ✅ | |
+| Red Hat | RHEL | 9.0 | x64 | ✅ | |
+| Red Hat | RHEL | 9.1 | x64 | ✅ | |
+| Red Hat | RHEL | 9.2 | x64 | ✅ | |
+| Red Hat | RHEL | 9.3 | x64 | ✅ | |
+| Red Hat | RHEL | 9.4 | x64 | ✅ | |
+
 | Canonical | Ubuntu | 22.04 LTS | x64 | ✅ | |
 | Canonical | Ubuntu | 24.04 LTS | x64 | ✅ | |
+
 | Debian | Debian | 11 | x64 | ✅ | |
 | Debian | Debian | 12 | x64 | ✅ | |
-| Oracle | Oracle Linux | 8 / 9 | x64 | ✅ | RHEL compatible |
-| AlmaLinux | AlmaLinux | 8 / 9 | x64 | ✅ | RHEL compatible |
-| Rocky Linux | Rocky Linux | 8 / 9 | x64 | ✅ | RHEL compatible |
+
+| Oracle | Oracle Linux | 8.0 | x64 | ✅ | RHEL compatible |
+| Oracle | Oracle Linux | 8.1 | x64 | ✅ | RHEL compatible |
+| Oracle | Oracle Linux | 8.2 | x64 | ✅ | RHEL compatible |
+| Oracle | Oracle Linux | 8.3 | x64 | ✅ | RHEL compatible |
+| Oracle | Oracle Linux | 8.4 | x64 | ✅ | RHEL compatible |
+| Oracle | Oracle Linux | 8.5 | x64 | ✅ | RHEL compatible |
+| Oracle | Oracle Linux | 8.6 | x64 | ✅ | RHEL compatible |
+| Oracle | Oracle Linux | 8.7 | x64 | ✅ | RHEL compatible |
+| Oracle | Oracle Linux | 8.8 | x64 | ✅ | RHEL compatible |
+| Oracle | Oracle Linux | 9.0 | x64 | ✅ | RHEL compatible |
+| Oracle | Oracle Linux | 9.1 | x64 | ✅ | RHEL compatible |
+| Oracle | Oracle Linux | 9.2 | x64 | ✅ | RHEL compatible |
+| Oracle | Oracle Linux | 9.3 | x64 | ✅ | RHEL compatible |
+
+| AlmaLinux | AlmaLinux | 8.0 | x64 | ✅ | RHEL compatible |
+| AlmaLinux | AlmaLinux | 8.1 | x64 | ✅ | RHEL compatible |
+| AlmaLinux | AlmaLinux | 8.2 | x64 | ✅ | RHEL compatible |
+| AlmaLinux | AlmaLinux | 8.3 | x64 | ✅ | RHEL compatible |
+| AlmaLinux | AlmaLinux | 8.4 | x64 | ✅ | RHEL compatible |
+| AlmaLinux | AlmaLinux | 8.5 | x64 | ✅ | RHEL compatible |
+| AlmaLinux | AlmaLinux | 8.6 | x64 | ✅ | RHEL compatible |
+| AlmaLinux | AlmaLinux | 8.7 | x64 | ✅ | RHEL compatible |
+| AlmaLinux | AlmaLinux | 8.8 | x64 | ✅ | RHEL compatible |
+| AlmaLinux | AlmaLinux | 8.9 | x64 | ✅ | RHEL compatible |
+| AlmaLinux | AlmaLinux | 9.0 | x64 | ✅ | RHEL compatible |
+| AlmaLinux | AlmaLinux | 9.1 | x64 | ✅ | RHEL compatible |
+| AlmaLinux | AlmaLinux | 9.2 | x64 | ✅ | RHEL compatible |
+| AlmaLinux | AlmaLinux | 9.3 | x64 | ✅ | RHEL compatible |
+
+| Rocky Linux | Rocky Linux | 8.0 | x64 | ✅ | RHEL compatible |
+| Rocky Linux | Rocky Linux | 8.1 | x64 | ✅ | RHEL compatible |
+| Rocky Linux | Rocky Linux | 8.2 | x64 | ✅ | RHEL compatible |
+| Rocky Linux | Rocky Linux | 8.3 | x64 | ✅ | RHEL compatible |
+| Rocky Linux | Rocky Linux | 8.4 | x64 | ✅ | RHEL compatible |
+| Rocky Linux | Rocky Linux | 8.5 | x64 | ✅ | RHEL compatible |
+| Rocky Linux | Rocky Linux | 8.6 | x64 | ✅ | RHEL compatible |
+| Rocky Linux | Rocky Linux | 8.7 | x64 | ✅ | RHEL compatible |
+| Rocky Linux | Rocky Linux | 8.8 | x64 | ✅ | RHEL compatible |
+| Rocky Linux | Rocky Linux | 8.9 | x64 | ✅ | RHEL compatible |
+| Rocky Linux | Rocky Linux | 9.0 | x64 | ✅ | RHEL compatible |
+| Rocky Linux | Rocky Linux | 9.1 | x64 | ✅ | RHEL compatible |
+| Rocky Linux | Rocky Linux | 9.2 | x64 | ✅ | RHEL compatible |
+| Rocky Linux | Rocky Linux | 9.3 | x64 | ✅ | RHEL compatible |
+
 | Amazon | Amazon Linux | 2 | x64 | ⚠️ | eBPF not supported |
 | Amazon | Amazon Linux | 2023 | x64 | ✅ | |
-
-Supported Microsoft(tm) Operating System Environments
-
-- Microsoft Windows 10
-
-- Microsoft Windows 11
-
-- Microsoft Server 2012 R2 (x64)
-
-- Microsoft Server 2016
-
-- Microsoft Server 2019
-
-- Microsoft Server 2022+
-
----
-
-Supported Linux Operating System Environments:
-
-- RHEL 8
-
-- RHEL 9
-
-- RHEL binary compatible distributions
-  
-- Oracle Linux
-
-- AlmaLinux
-
-- Rocky Linux
-
-- Ubuntu 22.04
-
-- Ubuntu 24.04 LTS.
-
-- Debian 11
-
-- Debian 12
-
-- AWS Linux 2
-
-- AWS Linux 2023
 
 ---
 ## Features
