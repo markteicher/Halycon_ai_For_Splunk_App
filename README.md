@@ -27,7 +27,6 @@ All functionality is implemented independently using publicly available Halycon.
 
 ## 🖥️ Halyconi.ai supports the following Operating Systems:
 
-## 🖥️ Supported Operating Systems
 
 ### 🪟 Windows Server Environments
 
