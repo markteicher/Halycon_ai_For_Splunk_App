@@ -1,5 +1,7 @@
 ![Halcyon](docs/images/Halcyon_ai_logo.jpg)
 
+---
+
 # Halcyon.ai for Splunk App
 
 ## Overview
@@ -11,6 +13,8 @@ This Splunk app provides the ability to monitor, investigate, and operationalize
 
 Real-time visibility into ransomware activity, behavioral detections, and automated response outcomes collected from Halcyon.ai without having to learn the Halycon.ai User Interface as well Halycon Filtering User Interface Dynamics.
 
+---
+
 ⚠️ Disclaimer
 This application is not an official Halycon.ai product.
 
@@ -18,6 +22,7 @@ Use of this software is not covered by any license, warranty, or support agreeme
 
 All functionality is implemented independently using publicly available Halycon.ai documentation
 
+---
 
 ## Halycon.ai supports the following Operating Systems:
 
@@ -35,7 +40,7 @@ Supported Microsoft(tm) Operating System Environments
 
 - Microsoft Server 2022+
 
-
+---
 
 Supported Linux Operating System Environments:
 
@@ -63,6 +68,7 @@ Supported Linux Operating System Environments:
 
 - AWS Linux 2023
 
+---
 ## Features
 
 ### 🛡️ Core Capabilities
@@ -75,6 +81,8 @@ Supported Linux Operating System Environments:
 | 🖥️ Endpoint Coverage | Host, device, and platform-level telemetry |
 | 👥 User & Tenant Context | Multi-tenant and user attribution support |
 
+---
+
 ### 📈 Advanced Analytics
 | Feature | Description |
 |---------|-------------|
@@ -85,6 +93,8 @@ Supported Linux Operating System Environments:
 | 🧩 Alert Correlation | Correlate alerts by host, user, or campaign |
 | 🏷️ Threat Categorization | Group alerts by ransomware family or behavior |
 
+---
+
 ### ⚙️ Operational Excellence
 | Feature | Description |
 |---------|-------------|
@@ -94,6 +104,8 @@ Supported Linux Operating System Environments:
 | 🕐 Scheduled Health Checks | Periodic API and token checks |
 | 📋 API Log Viewer | Full visibility into API activity and errors |
 
+---
+
 ### 🚀 Deployment
 | Feature | Description |
 |---------|-------------|
@@ -101,6 +113,8 @@ Supported Linux Operating System Environments:
 | 🖥️ Web UI Setup | Configure via Splunk Web |
 | ☁️ Splunk Cloud Ready | AppInspect-friendly design |
 | 📡 Modular Input | Secure API-based data ingestion |
+
+---
 
 ## Installation
 
@@ -115,19 +129,21 @@ Supported Linux Operating System Environments:
 1. Navigate to **Apps → Halcyon → Setup**
 2. Configure the following settings
 
-#### API Configuration
+#### Step 3 API Configuration
 - **Halcyon API Token**
 - **API Base URL**: https://api.halcyon.ai
 - **Verify SSL**
 - **Request Timeout**
 
-#### Proxy Configuration (Optional)
+#### Step 4 Proxy Configuration (Optional)
 - **Use Proxy**
 - **Proxy URL**
 - **Proxy Username**
 - **Proxy Password**
 
-#### Data Inputs
+
+#### Step 5 Data Inputs
+
 - Alerts
 - Alert Artifacts
 - Detection Metadata
@@ -135,15 +151,21 @@ Supported Linux Operating System Environments:
 - Hosts / Endpoints
 - Platform Health
 
-### Step 3: Validate Configuration
+### Step 6: Validate Configuration
 - Test API connection
 - Automatic validation on first launch
 
-### Step 4: Verify Data Collection
+### Step 7: Verify Data Collection
 ```spl
 index=security_halcyon sourcetype=halcyon:*
 | stats count by sourcetype
+
+---
+
+
 ```
+
+
 
 ## Directory Structure
 ```
@@ -185,6 +207,10 @@ Halcyon_For_Splunk_App/
     ├── appIcon.png
     ├── appIcon_2x.png
 ```
+
+
+---
+
 ## 📊 Dashboards
 | Dashboard | Description |
 |----------|-------------|
@@ -198,6 +224,8 @@ Halcyon_For_Splunk_App/
 | ⚙️ Operations | Metrics |
 | ❤️ Health | API health |
 
+---
+
 ## 🧾 Sourcetypes
 | Sourcetype | Description |
 |-----------|-------------|
@@ -208,10 +236,14 @@ Halcyon_For_Splunk_App/
 | `halcyon:hosts` | Hosts |
 | `halcyon:health` | Health |
 
+---
+
 ## 📦 Requirements
 - Splunk Enterprise / Splunk Cloud
 - Python 3.x (Splunk bundled)
 - Halcyon API Token
+
+---
 
 ## ✅ AppInspect Compliance
 - Proper directory structure
@@ -220,14 +252,20 @@ Halcyon_For_Splunk_App/
 - `app.manifest` included
 - Apache 2.0 License
 
+---
+
 ## 🛠️ Troubleshooting
 - Verify API token
 - Test API connectivity
 - Review Splunk internal logs
 
+---
+
 ## 📚 Support
 - Halcyon API Docs: https://api.halcyon.ai/docs
 - Splunk Docs: https://docs.splunk.com
+
+---
 
 ## 📜 License
 MIT License 2.0
