@@ -11,6 +11,13 @@ This Splunk app provides the ability to monitor, investigate, and operationalize
 
 Real-time visibility into ransomware activity, behavioral detections, and automated response outcomes collected from Halcyon.ai without having to learn the Halycon.ai User Interface as well Halycon Filtering User Interface Dynamics.
 
+⚠️ Disclaimer
+This application is not an official Halycon.ai product.
+
+Use of this software is not covered by any license, warranty, or support agreement you may have with Dragos.
+
+All functionality is implemented independently using publicly available Halycon.ai documentation
+
 
 ## Halycon.ai supports the following Operating Systems:
 
