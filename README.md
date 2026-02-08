@@ -70,13 +70,10 @@ All functionality is implemented independently using publicly available Halycon.
 | Red Hat | RHEL | 9.2 | x64 | ✅ | |
 | Red Hat | RHEL | 9.3 | x64 | ✅ | |
 | Red Hat | RHEL | 9.4 | x64 | ✅ | |
-
 | Canonical | Ubuntu | 22.04 LTS | x64 | ✅ | |
 | Canonical | Ubuntu | 24.04 LTS | x64 | ✅ | |
-
 | Debian | Debian | 11 | x64 | ✅ | |
 | Debian | Debian | 12 | x64 | ✅ | |
-
 | Oracle | Oracle Linux | 8.0 | x64 | ✅ | RHEL compatible |
 | Oracle | Oracle Linux | 8.1 | x64 | ✅ | RHEL compatible |
 | Oracle | Oracle Linux | 8.2 | x64 | ✅ | RHEL compatible |
@@ -90,7 +87,6 @@ All functionality is implemented independently using publicly available Halycon.
 | Oracle | Oracle Linux | 9.1 | x64 | ✅ | RHEL compatible |
 | Oracle | Oracle Linux | 9.2 | x64 | ✅ | RHEL compatible |
 | Oracle | Oracle Linux | 9.3 | x64 | ✅ | RHEL compatible |
-
 | AlmaLinux | AlmaLinux | 8.0 | x64 | ✅ | RHEL compatible |
 | AlmaLinux | AlmaLinux | 8.1 | x64 | ✅ | RHEL compatible |
 | AlmaLinux | AlmaLinux | 8.2 | x64 | ✅ | RHEL compatible |
@@ -105,7 +101,6 @@ All functionality is implemented independently using publicly available Halycon.
 | AlmaLinux | AlmaLinux | 9.1 | x64 | ✅ | RHEL compatible |
 | AlmaLinux | AlmaLinux | 9.2 | x64 | ✅ | RHEL compatible |
 | AlmaLinux | AlmaLinux | 9.3 | x64 | ✅ | RHEL compatible |
-
 | Rocky Linux | Rocky Linux | 8.0 | x64 | ✅ | RHEL compatible |
 | Rocky Linux | Rocky Linux | 8.1 | x64 | ✅ | RHEL compatible |
 | Rocky Linux | Rocky Linux | 8.2 | x64 | ✅ | RHEL compatible |
@@ -120,7 +115,6 @@ All functionality is implemented independently using publicly available Halycon.
 | Rocky Linux | Rocky Linux | 9.1 | x64 | ✅ | RHEL compatible |
 | Rocky Linux | Rocky Linux | 9.2 | x64 | ✅ | RHEL compatible |
 | Rocky Linux | Rocky Linux | 9.3 | x64 | ✅ | RHEL compatible |
-
 | Amazon | Amazon Linux | 2 | x64 | ⚠️ | eBPF not supported |
 | Amazon | Amazon Linux | 2023 | x64 | ✅ | |
 
