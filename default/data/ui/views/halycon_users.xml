@@ -1,6 +1,31 @@
+<!--
+=============================================================================
+ default/data/ui/views/halcyon_users.xml
+ Halcyon.ai for Splunk App
+ Users
+=============================================================================
+
+PURPOSE
+
+Operational user visibility for Halcyon platform users.
+
+This dashboard provides:
+- User search and filtering
+- Role-based user visibility
+- User count summaries
+- Role distribution analytics
+- Detailed user inventory
+
+=============================================================================
+-->
+
 <form version="1.1" theme="light">
   <label>👥 Halcyon Users</label>
   <description>Halcyon platform users</description>
+
+  <!-- =============================================================== -->
+  <!-- FILTERS                                                         -->
+  <!-- =============================================================== -->
 
   <fieldset submitButton="false" autoRun="true">
     <row>
@@ -24,6 +49,10 @@
       </panel>
     </row>
   </fieldset>
+
+  <!-- =============================================================== -->
+  <!-- USER SUMMARY                                                    -->
+  <!-- =============================================================== -->
 
   <row>
     <panel>
@@ -79,6 +108,10 @@
     </panel>
   </row>
 
+  <!-- =============================================================== -->
+  <!-- ROLE DISTRIBUTION                                               -->
+  <!-- =============================================================== -->
+
   <row>
     <panel>
       <title>📊 Users by Role</title>
@@ -94,6 +127,10 @@
       </chart>
     </panel>
   </row>
+
+  <!-- =============================================================== -->
+  <!-- USER INVENTORY                                                  -->
+  <!-- =============================================================== -->
 
   <row>
     <panel>
