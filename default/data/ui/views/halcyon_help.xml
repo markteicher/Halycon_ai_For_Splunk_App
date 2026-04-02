@@ -1,14 +1,20 @@
-<!--
-default/data/ui/views/halcyon_help.xml
-Halcyon.ai for Splunk App — Help
--->
-
-<form version="1.1" theme="light">
+<dashboard version="1.1" theme="light">
   <label>❓ Halcyon.ai for Splunk — Help</label>
   <description>Operational guidance, data reference, and troubleshooting for the Halcyon.ai for Splunk App.</description>
-
   <!-- ========================= -->
   <!-- Overview                  -->
+  <!-- ========================= -->
+  <!-- ========================= -->
+  <!-- Data Sources              -->
+  <!-- ========================= -->
+  <!-- ========================= -->
+  <!-- RBAC & Scale              -->
+  <!-- ========================= -->
+  <!-- ========================= -->
+  <!-- Troubleshooting           -->
+  <!-- ========================= -->
+  <!-- ========================= -->
+  <!-- Support                   -->
   <!-- ========================= -->
   <row>
     <panel>
@@ -24,11 +30,49 @@ Halcyon.ai for Splunk App — Help
         </p>
       </html>
     </panel>
+    <panel>
+      <title>👥 Identity and Role Based Access Control at Scale</title>
+      <html>
+        <p>
+          This app enables centralized visibility without requiring thousands of users to be provisioned
+          directly in Halcyon.ai.
+        </p>
+        <ul>
+          <li>Splunk RBAC controls access to dashboards and data</li>
+          <li>Halcyon roles are preserved for reporting and auditing</li>
+          <li>No CSV or PDF exports required for executive consumption</li>
+        </ul>
+      </html>
+    </panel>
+    <panel>
+      <title>🛠️ Troubleshooting</title>
+      <html>
+        <ul>
+          <li>Verify API token validity in <b>Setup</b>
+          </li>
+          <li>Confirm inputs are enabled and polling as expected</li>
+          <li>Check Splunk internal logs for API or parsing errors</li>
+          <li>Validate network access to <code>https://api.halcyon.ai</code>
+          </li>
+        </ul>
+      </html>
+    </panel>
+    <panel>
+      <title>📞 Support and Documentation</title>
+      <html>
+        <ul>
+          <li>
+            Halcyon API Documentation:
+            <a href="https://api.halcyon.ai/docs" target="_blank">https://api.halcyon.ai/docs</a>
+          </li>
+          <li>
+            Splunk Documentation:
+            <a href="https://docs.splunk.com" target="_blank">https://docs.splunk.com</a>
+          </li>
+        </ul>
+      </html>
+    </panel>
   </row>
-
-  <!-- ========================= -->
-  <!-- Data Sources              -->
-  <!-- ========================= -->
   <row>
     <panel>
       <title>🗂️ Data Sources and Sourcetypes</title>
@@ -67,63 +111,4 @@ Halcyon.ai for Splunk App — Help
       </table>
     </panel>
   </row>
-
-  <!-- ========================= -->
-  <!-- RBAC & Scale              -->
-  <!-- ========================= -->
-  <row>
-    <panel>
-      <title>👥 Identity and Role Based Access Control at Scale</title>
-      <html>
-        <p>
-          This app enables centralized visibility without requiring thousands of users to be provisioned
-          directly in Halcyon.ai.
-        </p>
-        <ul>
-          <li>Splunk RBAC controls access to dashboards and data</li>
-          <li>Halcyon roles are preserved for reporting and auditing</li>
-          <li>No CSV or PDF exports required for executive consumption</li>
-        </ul>
-      </html>
-    </panel>
-  </row>
-
-  <!-- ========================= -->
-  <!-- Troubleshooting           -->
-  <!-- ========================= -->
-  <row>
-    <panel>
-      <title>🛠️ Troubleshooting</title>
-      <html>
-        <ul>
-          <li>Verify API token validity in <b>Setup</b></li>
-          <li>Confirm inputs are enabled and polling as expected</li>
-          <li>Check Splunk internal logs for API or parsing errors</li>
-          <li>Validate network access to <code>https://api.halcyon.ai</code></li>
-        </ul>
-      </html>
-    </panel>
-  </row>
-
-  <!-- ========================= -->
-  <!-- Support                   -->
-  <!-- ========================= -->
-  <row>
-    <panel>
-      <title>📞 Support and Documentation</title>
-      <html>
-        <ul>
-          <li>
-            Halcyon API Documentation:
-            <a href="https://api.halcyon.ai/docs" target="_blank">https://api.halcyon.ai/docs</a>
-          </li>
-          <li>
-            Splunk Documentation:
-            <a href="https://docs.splunk.com" target="_blank">https://docs.splunk.com</a>
-          </li>
-        </ul>
-      </html>
-    </panel>
-  </row>
-
-</form>
+</dashboard>
