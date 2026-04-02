@@ -1,136 +1,288 @@
 <!--
-default/data/ui/views/halycon_alerts.xml
-Halcyon.ai for Splunk App — Alerts
+=============================================================================
+ default/data/ui/views/halycon_alerts.xml
+ Halycon.ai for Splunk App
+ Alerts
+=============================================================================
+
+PURPOSE
+
+Operational alert investigation workspace for Halcyon alerts.
+
+=============================================================================
 -->
 
 <form version="1.1" theme="light">
-  <label>🚨 Halcyon.ai — Alerts</label>
-  <description>Investigate ransomware alerts, severity, and response status.</description>
+  <label>Halycon Alerts</label>
 
-  <!-- ===================== -->
-  <!-- Alert KPIs            -->
-  <!-- ===================== -->
+  <!-- =============================================================== -->
+  <!-- BASE SEARCH                                                     -->
+  <!-- =============================================================== -->
+
+  <search id="base_alerts">
+    <query><![CDATA[
+index=* sourcetype="halcyon:alerts"
+| eval firstSeenEpoch=coalesce(
+    strptime(firstSeen,"%Y-%m-%dT%H:%M:%S.%QZ"),
+    strptime(firstSeen,"%Y-%m-%dT%H:%M:%SZ")
+  )
+| eval lastSeenEpoch=coalesce(
+    strptime(lastSeen,"%Y-%m-%dT%H:%M:%S.%QZ"),
+    strptime(lastSeen,"%Y-%m-%dT%H:%M:%SZ")
+  )
+| eval createdAtEpoch=coalesce(
+    strptime(createdAt,"%Y-%m-%dT%H:%M:%S.%QZ"),
+    strptime(createdAt,"%Y-%m-%dT%H:%M:%SZ")
+  )
+| eval updatedAtEpoch=coalesce(
+    strptime(updatedAt,"%Y-%m-%dT%H:%M:%S.%QZ"),
+    strptime(updatedAt,"%Y-%m-%dT%H:%M:%SZ")
+  )
+| eval completedAtEpoch=coalesce(
+    strptime(completedAt,"%Y-%m-%dT%H:%M:%S.%QZ"),
+    strptime(completedAt,"%Y-%m-%dT%H:%M:%SZ")
+  )
+| eval triage_status=coalesce(triageStatus,status)
+| eval alert_kind=coalesce(kind,targetKind)
+| eval alert_action=coalesce(action,recommendedAction)
+| eval asset_count=coalesce(assetCount,assetsCount)
+| eval alert_count=coalesce(count,eventCount)
+    ]]></query>
+  </search>
+
+  <!-- =============================================================== -->
+  <!-- SEARCH CONTROLS                                                 -->
+  <!-- =============================================================== -->
+
+  <fieldset submitButton="true">
+    <input type="text" token="tok_alert_id">
+      <label>Alert ID</label>
+    </input>
+
+    <input type="text" token="tok_sha256">
+      <label>Offending SHA256</label>
+    </input>
+
+    <input type="text" token="tok_note">
+      <label>Note Contains</label>
+    </input>
+
+    <input type="dropdown" token="tok_status">
+      <label>Triage Status</label>
+      <choice value="*">All</choice>
+      <search base="base_alerts">
+        <query><![CDATA[
+| where isnotnull(triage_status) AND triage_status!=""
+| stats count by triage_status
+| sort triage_status
+        ]]></query>
+      </search>
+      <fieldForLabel>triage_status</fieldForLabel>
+      <fieldForValue>triage_status</fieldForValue>
+      <default>*</default>
+    </input>
+
+    <input type="dropdown" token="tok_kind">
+      <label>Kind</label>
+      <choice value="*">All</choice>
+      <search base="base_alerts">
+        <query><![CDATA[
+| where isnotnull(alert_kind) AND alert_kind!=""
+| stats count by alert_kind
+| sort alert_kind
+        ]]></query>
+      </search>
+      <fieldForLabel>alert_kind</fieldForLabel>
+      <fieldForValue>alert_kind</fieldForValue>
+      <default>*</default>
+    </input>
+
+    <input type="dropdown" token="tok_action">
+      <label>Action</label>
+      <choice value="*">All</choice>
+      <search base="base_alerts">
+        <query><![CDATA[
+| where isnotnull(alert_action) AND alert_action!=""
+| stats count by alert_action
+| sort alert_action
+        ]]></query>
+      </search>
+      <fieldForLabel>alert_action</fieldForLabel>
+      <fieldForValue>alert_action</fieldForValue>
+      <default>*</default>
+    </input>
+
+    <input type="text" token="tok_min_count">
+      <label>Minimum Count</label>
+    </input>
+
+    <input type="time" token="tok_time">
+      <label>Time Range</label>
+      <default>
+        <earliest>-30d@d</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+  </fieldset>
+
+  <!-- =============================================================== -->
+  <!-- ROW 1: OVERVIEW                                                 -->
+  <!-- =============================================================== -->
+
   <row>
     <panel>
-      <title>🚨 Total Alerts (24h)</title>
+      <title>Total Alerts</title>
       <single>
-        <search>
-          <query>
-            index=security_halcyon sourcetype=halcyon:alert earliest=-24h
-            | stats count
-          </query>
+        <search base="base_alerts">
+          <query><![CDATA[
+| search alertId="$tok_alert_id$" offendingSha256="*$tok_sha256$*" triage_status="$tok_status$" alert_kind="$tok_kind$" alert_action="$tok_action$" note="*$tok_note$*"
+| where "$tok_min_count$"="" OR alert_count>=tonumber("$tok_min_count$")
+| stats count
+          ]]></query>
+          <earliest>$tok_time.earliest$</earliest>
+          <latest>$tok_time.latest$</latest>
         </search>
-        <option name="unit">alerts</option>
       </single>
     </panel>
 
     <panel>
-      <title>🔥 Critical Alerts</title>
+      <title>Total Affected Assets</title>
       <single>
-        <search>
-          <query>
-            index=security_halcyon sourcetype=halcyon:alert severity=Critical earliest=-24h
-            | stats count
-          </query>
+        <search base="base_alerts">
+          <query><![CDATA[
+| search alertId="$tok_alert_id$" offendingSha256="*$tok_sha256$*" triage_status="$tok_status$" alert_kind="$tok_kind$" alert_action="$tok_action$" note="*$tok_note$*"
+| where "$tok_min_count$"="" OR alert_count>=tonumber("$tok_min_count$")
+| stats sum(asset_count) as asset_total
+          ]]></query>
+          <earliest>$tok_time.earliest$</earliest>
+          <latest>$tok_time.latest$</latest>
         </search>
-        <option name="unit">critical</option>
       </single>
     </panel>
 
     <panel>
-      <title>🟡 Open Alerts</title>
+      <title>Latest Alert Update</title>
       <single>
-        <search>
-          <query>
-            index=security_halcyon sourcetype=halcyon:alert status=Open
-            | stats count
-          </query>
+        <search base="base_alerts">
+          <query><![CDATA[
+| search alertId="$tok_alert_id$" offendingSha256="*$tok_sha256$*" triage_status="$tok_status$" alert_kind="$tok_kind$" alert_action="$tok_action$" note="*$tok_note$*"
+| where "$tok_min_count$"="" OR alert_count>=tonumber("$tok_min_count$")
+| stats latest(updatedAtEpoch) as last_update
+| eval last_update=strftime(last_update,"%Y-%m-%d %H:%M:%S UTC")
+          ]]></query>
+          <earliest>$tok_time.earliest$</earliest>
+          <latest>$tok_time.latest$</latest>
         </search>
-        <option name="unit">open</option>
-      </single>
-    </panel>
-
-    <panel>
-      <title>✅ Resolved Alerts</title>
-      <single>
-        <search>
-          <query>
-            index=security_halcyon sourcetype=halcyon:alert status=Resolved earliest=-24h
-            | stats count
-          </query>
-        </search>
-        <option name="unit">resolved</option>
       </single>
     </panel>
   </row>
 
-  <!-- ===================== -->
-  <!-- Alert Trends          -->
-  <!-- ===================== -->
+  <!-- =============================================================== -->
+  <!-- ROW 2: DISTRIBUTION                                             -->
+  <!-- =============================================================== -->
+
   <row>
     <panel>
-      <title>📈 Alert Volume Trend (7 Days)</title>
+      <title>Alerts by Triage Status</title>
       <chart>
-        <search>
-          <query>
-            index=security_halcyon sourcetype=halcyon:alert earliest=-7d
-            | timechart span=1d count
-          </query>
-        </search>
-        <option name="charting.chart">line</option>
-        <option name="charting.axisTitleX.text">Date</option>
-        <option name="charting.axisTitleY.text">Alerts</option>
-      </chart>
-    </panel>
-  </row>
-
-  <!-- ===================== -->
-  <!-- Severity Breakdown    -->
-  <!-- ===================== -->
-  <row>
-    <panel>
-      <title>⚠️ Alerts by Severity</title>
-      <chart>
-        <search>
-          <query>
-            index=security_halcyon sourcetype=halcyon:alert
-            | stats count by severity
-          </query>
-        </search>
-        <option name="charting.chart">bar</option>
-      </chart>
-    </panel>
-
-    <panel>
-      <title>🧩 Alerts by Status</title>
-      <chart>
-        <search>
-          <query>
-            index=security_halcyon sourcetype=halcyon:alert
-            | stats count by status
-          </query>
+        <search base="base_alerts">
+          <query><![CDATA[
+| search alertId="$tok_alert_id$" offendingSha256="*$tok_sha256$*" triage_status="$tok_status$" alert_kind="$tok_kind$" alert_action="$tok_action$" note="*$tok_note$*"
+| where "$tok_min_count$"="" OR alert_count>=tonumber("$tok_min_count$")
+| stats count by triage_status
+| sort - count
+          ]]></query>
+          <earliest>$tok_time.earliest$</earliest>
+          <latest>$tok_time.latest$</latest>
         </search>
         <option name="charting.chart">pie</option>
       </chart>
     </panel>
+
+    <panel>
+      <title>Alerts by Kind</title>
+      <chart>
+        <search base="base_alerts">
+          <query><![CDATA[
+| search alertId="$tok_alert_id$" offendingSha256="*$tok_sha256$*" triage_status="$tok_status$" alert_kind="$tok_kind$" alert_action="$tok_action$" note="*$tok_note$*"
+| where "$tok_min_count$"="" OR alert_count>=tonumber("$tok_min_count$")
+| stats count by alert_kind
+| sort - count
+          ]]></query>
+          <earliest>$tok_time.earliest$</earliest>
+          <latest>$tok_time.latest$</latest>
+        </search>
+        <option name="charting.chart">bar</option>
+      </chart>
+    </panel>
   </row>
 
-  <!-- ===================== -->
-  <!-- Alerts Table          -->
-  <!-- ===================== -->
+  <!-- =============================================================== -->
+  <!-- ROW 3: TRENDS                                                   -->
+  <!-- =============================================================== -->
+
   <row>
     <panel>
-      <title>🗂️ Alert Details</title>
-      <table>
-        <search>
-          <query>
-            index=security_halcyon sourcetype=halcyon:alert
-            | sort -_time
-            | table _time alert_id severity status alert_type device_name policy_name
-          </query>
+      <title>Alert Volume Over Time</title>
+      <chart>
+        <search base="base_alerts">
+          <query><![CDATA[
+| search alertId="$tok_alert_id$" offendingSha256="*$tok_sha256$*" triage_status="$tok_status$" alert_kind="$tok_kind$" alert_action="$tok_action$" note="*$tok_note$*"
+| where "$tok_min_count$"="" OR alert_count>=tonumber("$tok_min_count$")
+| timechart span=1d count
+          ]]></query>
+          <earliest>$tok_time.earliest$</earliest>
+          <latest>$tok_time.latest$</latest>
         </search>
+        <option name="charting.chart">line</option>
+      </chart>
+    </panel>
+  </row>
+
+  <!-- =============================================================== -->
+  <!-- ROW 4: TOP HASHES                                               -->
+  <!-- =============================================================== -->
+
+  <row>
+    <panel>
+      <title>Top Offending SHA256</title>
+      <table>
+        <search base="base_alerts">
+          <query><![CDATA[
+| search alertId="$tok_alert_id$" offendingSha256="*$tok_sha256$*" triage_status="$tok_status$" alert_kind="$tok_kind$" alert_action="$tok_action$" note="*$tok_note$*"
+| where "$tok_min_count$"="" OR alert_count>=tonumber("$tok_min_count$")
+| stats count sum(asset_count) as asset_count by offendingSha256
+| sort - count
+| head 20
+          ]]></query>
+          <earliest>$tok_time.earliest$</earliest>
+          <latest>$tok_time.latest$</latest>
+        </search>
+        <option name="count">20</option>
+      </table>
+    </panel>
+  </row>
+
+  <!-- =============================================================== -->
+  <!-- ROW 5: DETAIL TABLE                                             -->
+  <!-- =============================================================== -->
+
+  <row>
+    <panel>
+      <title>Alert Details</title>
+      <table>
+        <search base="base_alerts">
+          <query><![CDATA[
+| search alertId="$tok_alert_id$" offendingSha256="*$tok_sha256$*" triage_status="$tok_status$" alert_kind="$tok_kind$" alert_action="$tok_action$" note="*$tok_note$*"
+| where "$tok_min_count$"="" OR alert_count>=tonumber("$tok_min_count$")
+| table alertId triage_status alert_kind alert_action asset_count alert_count offendingSha256 firstSeen lastSeen createdAt updatedAt completedAt note
+| sort - updatedAtEpoch
+          ]]></query>
+          <earliest>$tok_time.earliest$</earliest>
+          <latest>$tok_time.latest$</latest>
+        </search>
+        <option name="count">25</option>
         <option name="wrap">true</option>
-        <option name="drilldown">row</option>
       </table>
     </panel>
   </row>
