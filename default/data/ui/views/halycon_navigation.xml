@@ -1,0 +1,242 @@
+<!--
+=============================================================================
+ default/data/ui/views/halycon_navigation.xml
+ Halycon.ai for Splunk App
+ Navigation Hub
+=============================================================================
+
+PURPOSE
+
+Tile-based landing page linking to every functional view.
+Section-header tiles (grey, full-width) break the grid into logical
+groups. Matches the same “portal tile” design used in the
+Documentation Hub.
+
+=============================================================================
+-->
+<dashboard version="1.1" theme="light">
+  <label>📚 Halycon.ai – Navigation Hub</label>
+
+  <row>
+    <panel>
+      <html>
+
+        <!-- ────────────── tile-grid styles ────────────── -->
+        <style>
+          .portal-grid{
+            display:grid;
+            grid-template-columns:repeat(4,1fr);
+            gap:22px;
+            margin-top:20px;
+          }
+          .portal-tile{
+            background:#ffffff;
+            border:1px solid #e5e5e5;
+            border-radius:8px;
+            padding:22px;
+            text-align:center;
+            transition:all .18s ease;
+          }
+          .portal-tile:hover{
+            box-shadow:0 4px 14px rgba(0,0,0,.18);
+            transform:translateY(-2px);
+          }
+          .portal-icon{font-size:34px;margin-bottom:10px;}
+          .portal-title{font-size:15px;font-weight:600;}
+          .portal-link{text-decoration:none;color:inherit;display:block;}
+
+          /* section header tiles (not clickable) */
+          .portal-header{
+            background:#f5f5f5;
+            border:1px solid #d0d0d0;
+            cursor:default;
+            grid-column:span 4;
+            font-size:16px;
+            font-weight:700;
+            padding:18px 22px;
+          }
+        </style>
+
+        <!-- ───────────────────  GRID  ─────────────────── -->
+        <div class="portal-grid">
+
+          <!-- Overview -->
+          <div class="portal-tile portal-header">Overview</div>
+          <a class="portal-link" href="halycon_overview">
+            <div class="portal-tile"><div class="portal-icon">🧭</div><div class="portal-title">Overview</div></div>
+          </a>
+
+          <!-- Alerts -->
+          <div class="portal-tile portal-header">Alerts</div>
+          <a class="portal-link" href="halycon_alerts">
+            <div class="portal-tile"><div class="portal-icon">🚨</div><div class="portal-title">Alerts</div></div>
+          </a>
+
+          <!-- Alert Instances -->
+          <div class="portal-tile portal-header">Alert Instances</div>
+          <a class="portal-link" href="halycon_alert_instances">
+            <div class="portal-tile"><div class="portal-icon">🧾</div><div class="portal-title">Alert Instances</div></div>
+          </a>
+
+          <!-- Detections -->
+          <div class="portal-tile portal-header">Detections</div>
+          <a class="portal-link" href="halcyon_detections">
+            <div class="portal-tile"><div class="portal-icon">🔎</div><div class="portal-title">Detections</div></div>
+          </a>
+
+          <!-- Threats -->
+          <div class="portal-tile portal-header">Threats</div>
+          <a class="portal-link" href="halycon_threats">
+            <div class="portal-tile"><div class="portal-icon">🧠</div><div class="portal-title">Threats</div></div>
+          </a>
+
+          <!-- Response -->
+          <div class="portal-tile portal-header">Response</div>
+          <a class="portal-link" href="halcyon_response">
+            <div class="portal-tile"><div class="portal-icon">🛡️</div><div class="portal-title">Response</div></div>
+          </a>
+
+          <!-- Trending -->
+          <div class="portal-tile portal-header">Trending</div>
+          <a class="portal-link" href="halcyon_trending">
+            <div class="portal-tile"><div class="portal-icon">📈</div><div class="portal-title">Trending</div></div>
+          </a>
+
+          <!-- Assets -->
+          <div class="portal-tile portal-header">Assets</div>
+          <a class="portal-link" href="halycon_assets">
+            <div class="portal-tile"><div class="portal-icon">💼</div><div class="portal-title">Assets</div></div>
+          </a>
+
+          <!-- Hosts -->
+          <div class="portal-tile portal-header">Hosts</div>
+          <a class="portal-link" href="halycon_hosts">
+            <div class="portal-tile"><div class="portal-icon">🖥️</div><div class="portal-title">Hosts</div></div>
+          </a>
+
+          <!-- Devices -->
+          <div class="portal-tile portal-header">Devices</div>
+          <a class="portal-link" href="halcyon_devices">
+            <div class="portal-tile"><div class="portal-icon">📟</div><div class="portal-title">Devices</div></div>
+          </a>
+
+          <!-- Device Extracted Keys -->
+          <div class="portal-tile portal-header">Device Extracted Keys</div>
+          <a class="portal-link" href="halcyon_device_extracted_keys">
+            <div class="portal-tile"><div class="portal-icon">🔑</div><div class="portal-title">Device Extracted Keys</div></div>
+          </a>
+
+          <!-- Artifacts -->
+          <div class="portal-tile portal-header">Artifacts</div>
+          <a class="portal-link" href="halycon_artifacts">
+            <div class="portal-tile"><div class="portal-icon">📦</div><div class="portal-title">Artifacts</div></div>
+          </a>
+
+          <!-- Installers -->
+          <div class="portal-tile portal-header">Installers</div>
+          <a class="portal-link" href="halycon_installers">
+            <div class="portal-tile"><div class="portal-icon">📥</div><div class="portal-title">Installers</div></div>
+          </a>
+
+          <!-- Tags -->
+          <div class="portal-tile portal-header">Tags</div>
+          <a class="portal-link" href="halcyon_tags">
+            <div class="portal-tile"><div class="portal-icon">🏷️</div><div class="portal-title">Tags</div></div>
+          </a>
+
+          <!-- Tenants -->
+          <div class="portal-tile portal-header">Tenants</div>
+          <a class="portal-link" href="halcyon_tenants">
+            <div class="portal-tile"><div class="portal-icon">🏢</div><div class="portal-title">Tenants</div></div>
+          </a>
+
+          <!-- Subtenants -->
+          <div class="portal-tile portal-header">Subtenants</div>
+          <a class="portal-link" href="halcyon_subtenants">
+            <div class="portal-tile"><div class="portal-icon">🏬</div><div class="portal-title">Subtenants</div></div>
+          </a>
+
+          <!-- Users -->
+          <div class="portal-tile portal-header">Users</div>
+          <a class="portal-link" href="halycon_users">
+            <div class="portal-tile"><div class="portal-icon">👥</div><div class="portal-title">Users</div></div>
+          </a>
+
+          <!-- Authentication Events -->
+          <div class="portal-tile portal-header">Authentication Events</div>
+          <a class="portal-link" href="halcyon_auth_events">
+            <div class="portal-tile"><div class="portal-icon">🔐</div><div class="portal-title">Authentication Events</div></div>
+          </a>
+
+          <!-- Policies -->
+          <div class="portal-tile portal-header">Policies</div>
+          <a class="portal-link" href="halcyon_policies">
+            <div class="portal-tile"><div class="portal-icon">📜</div><div class="portal-title">Policies</div></div>
+          </a>
+
+          <!-- Policy Groups -->
+          <div class="portal-tile portal-header">Policy Groups</div>
+          <a class="portal-link" href="halcyon_policy_groups">
+            <div class="portal-tile"><div class="portal-icon">🗂️</div><div class="portal-title">Policy Groups</div></div>
+          </a>
+
+          <!-- Overrides -->
+          <div class="portal-tile portal-header">Overrides</div>
+          <a class="portal-link" href="halcyon_overrides">
+            <div class="portal-tile"><div class="portal-icon">✏️</div><div class="portal-title">Overrides</div></div>
+          </a>
+
+          <!-- Operations -->
+          <div class="portal-tile portal-header">Operations</div>
+          <a class="portal-link" href="halycon_operations">
+            <div class="portal-tile"><div class="portal-icon">⚙️</div><div class="portal-title">Operations</div></div>
+          </a>
+
+          <!-- Health -->
+          <div class="portal-tile portal-header">Health</div>
+          <a class="portal-link" href="halycon_health">
+            <div class="portal-tile"><div class="portal-icon">❤️</div><div class="portal-title">Health</div></div>
+          </a>
+
+          <!-- Jobs -->
+          <div class="portal-tile portal-header">Jobs</div>
+          <a class="portal-link" href="halcyon_jobs">
+            <div class="portal-tile"><div class="portal-icon">🧰</div><div class="portal-title">Jobs</div></div>
+          </a>
+
+          <!-- Metrics -->
+          <div class="portal-tile portal-header">Metrics</div>
+          <a class="portal-link" href="halcyon_metrics">
+            <div class="portal-tile"><div class="portal-icon">📊</div><div class="portal-title">Metrics</div></div>
+          </a>
+
+          <!-- Integrations -->
+          <div class="portal-tile portal-header">Integrations</div>
+          <a class="portal-link" href="halcyon_integrations">
+            <div class="portal-tile"><div class="portal-icon">🔗</div><div class="portal-title">Integrations</div></div>
+          </a>
+
+          <!-- Webhooks -->
+          <div class="portal-tile portal-header">Webhooks</div>
+          <a class="portal-link" href="halcyon_webhooks">
+            <div class="portal-tile"><div class="portal-icon">🪝</div><div class="portal-title">Webhooks</div></div>
+          </a>
+
+          <!-- Help -->
+          <div class="portal-tile portal-header">Help</div>
+          <a class="portal-link" href="halcyon_help">
+            <div class="portal-tile"><div class="portal-icon">❓</div><div class="portal-title">Help</div></div>
+          </a>
+
+          <!-- Setup -->
+          <div class="portal-tile portal-header">Setup</div>
+          <a class="portal-link" href="setup">
+            <div class="portal-tile"><div class="portal-icon">🔧</div><div class="portal-title">Setup</div></div>
+          </a>
+
+        </div>
+
+      </html>
+    </panel>
+  </row>
+</dashboard>
