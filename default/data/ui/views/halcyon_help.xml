@@ -31,7 +31,7 @@ Halcyon.ai for Splunk App — Help
   <!-- ========================= -->
   <row>
     <panel>
-      <title>🗂️ Data Sources & Sourcetypes</title>
+      <title>🗂️ Data Sources and Sourcetypes</title>
       <table>
         <search>
           <query>
