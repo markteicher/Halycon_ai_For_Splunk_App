@@ -73,7 +73,7 @@ Halcyon.ai for Splunk App — Help
   <!-- ========================= -->
   <row>
     <panel>
-      <title>👥 Identity & RBAC at Scale</title>
+      <title>👥 Identity and Role Based Access Control at Scale</title>
       <html>
         <p>
           This app enables centralized visibility without requiring thousands of users to be provisioned
@@ -110,7 +110,7 @@ Halcyon.ai for Splunk App — Help
   <!-- ========================= -->
   <row>
     <panel>
-      <title>📞 Support & Documentation</title>
+      <title>📞 Support and Documentation</title>
       <html>
         <ul>
           <li>
